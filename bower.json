@@ -1,0 +1,19 @@
+{
+  "name": "build-checker-app",
+  "version": "0.0.1",
+  "authors": [
+    "Will Mendes"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "engine": "node >= 4.1",
+  "dependencies": {
+    "pure": "~0.6.0"
+  }
+}
