@@ -11,7 +11,7 @@
   },
   "repository": "https://github.com/willmendesneto/build-checker-app",
   "scripts": {
-    "install": "bower install",
+    "install": "./node_modules/.bin/bower install",
     "start": "gulp serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
