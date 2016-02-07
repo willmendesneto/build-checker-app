@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 var UrlHelper = {
   generateUrlFriendly: function (string) {

@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 import app from 'app';
 import Menu from 'menu';

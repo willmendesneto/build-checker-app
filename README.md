@@ -1,32 +1,37 @@
-# Build Checker App
+# electron-es6-react
 
+A simple boilerplate app to demonstrate how to use [ES6] and [React] with
+[Electron]. It uses [Babel] to automatically transpile ES6 and JSX code,
+without depending on any package manager besides `npm`.
 
+## How?
 
-## Run application
-### With file watch and livereload
+The main entry point is `boostrapper.js`, which registers Babel and loads the
+real entry point `main.js`. This is necessary to allow `main.js` to make use of
+Babel's features.
+
+The renderer entry point `index.html` does basically the same, but loads the
+`scripts/main.js` file, which renders the `views/main.jsx` component into the `body`.
+
+## Installation
 
 ```bash
+git clone https://github.com/b52/electron-es6-react.git
+cd electron-es6-react
+npm install
 gulp serve
-```
-
-### Pre-packaging app
-
-```bash
-gulp build;electron dist
 ```
 
 ## Package application
 
 ```bash
-gulp package
+npm run build
 ```
 
 ## Directory structure
 
 ```
-+ .serve/              Compiled files
-+ dist/                Application for distribution
-- release/             Packaged applications for platforms
+- dist/             Packaged applications for platforms
  |+ darwin/
  |+ linux/
  |+ win32/
@@ -38,10 +43,15 @@ gulp package
  |- renderer/          For renderer process scripts and resources
   |+ components/       React components
   |  bootstrap.js      Entry point for render process
-  |  index.html
  |- styles/            SCSS directory
  |  app.js             Entry point for browser process
   bower.json           Bower package (optional)
   gulpfile.js          Gulp tasks
   package.json
 ```
+
+
+[ES6]: http://exploringjs.com/
+[React]: https://facebook.github.io/react/
+[Electron]: http://electron.atom.io/
+[Babel]: http://babeljs.io

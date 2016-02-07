@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 import React from 'react';
 import CardList from './CardList';
@@ -30,6 +30,7 @@ export default class Card extends React.Component {
   render() {
     return (
         <div>
+          <h1>Build Checker App</h1>
           <br />
           <br />
           <CardList items={this.state.items} />

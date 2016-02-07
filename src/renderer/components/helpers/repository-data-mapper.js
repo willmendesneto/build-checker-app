@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 import $ from 'jquery';
 import CONFIG from '../constants/AppConstants';

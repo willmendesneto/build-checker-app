@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 import React from 'react';
 

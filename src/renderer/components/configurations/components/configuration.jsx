@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 import React from 'react';
 
@@ -35,25 +35,28 @@ var Configuration = React.createClass({
 
   render: function() {
     return (
-      <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
-        <fieldset>
-          <legend>Configurations</legend>
+      <div>
+        <h1>Build Checker App</h1>
+        <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
+          <fieldset>
+            <legend>Configurations</legend>
 
-          <label htmlFor="name">Repository name</label>
-          <input id="name" type="text"
-          placeholder="Repository name"
-          value={this.state.name}
-          onChange={this.handleNameChange} />
+            <label htmlFor="name">Repository name</label>
+            <input id="name" type="text"
+            placeholder="Repository name"
+            value={this.state.name}
+            onChange={this.handleNameChange} />
 
-          <label htmlFor="cctrayTrackingURL">CCTray Repo URL</label>
-          <input id="cctrayTrackingURL" type="text"
-          placeholder="Repository name"
-          value={this.state.cctrayTrackingURL}
-          onChange={this.handleCCTrayTrackingURLChange} />
+            <label htmlFor="cctrayTrackingURL">CCTray Repo URL</label>
+            <input id="cctrayTrackingURL" type="text"
+            placeholder="Repository name"
+            value={this.state.cctrayTrackingURL}
+            onChange={this.handleCCTrayTrackingURLChange} />
 
-          <button type="submit" className="button-xlarge pure-button pure-button-primary">ADD</button>
-        </fieldset>
-      </form>
+            <button type="submit" className="button-xlarge pure-button pure-button-primary">ADD</button>
+          </fieldset>
+        </form>
+      </div>
     );
   }
 });

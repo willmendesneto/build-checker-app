@@ -1,4 +1,4 @@
-'use strict';
+'use babel';
 
 const isGhPages = window.location.origin.indexOf('github.io') !== -1;
 
