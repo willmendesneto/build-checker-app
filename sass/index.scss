@@ -16,6 +16,7 @@ header {
 	text-align: center;
 }
 
+
 h1 {
 	font-size: 40px;
 	font-weight: 100;
@@ -26,6 +27,13 @@ h1 {
 	text-align: center;
 	margin-bottom: 20px;
 	margin-top: 20px;
+}
+
+.content {
+	padding: 0 5% 5% 5%;
+}
+.button-xlarge {
+  font-size: 125%;
 }
 
 .build-card {

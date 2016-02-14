@@ -1,0 +1,53 @@
+// <div className="notify-info">This is info text</div>
+// <div className="notify-success">This is success text</div>
+// <div className="notify-warning">This is warning text</div>
+// <div className="notify-error">This is error text</div>
+
+.notify-info, .notify-success, .notify-warning, .notify-error {
+    padding:10px;
+    margin:10px 0;
+}
+.notify-info:before, .notify-success:before, .notify-warning:before, .notify-error:before {
+    font-style:normal;
+    font-weight:400;
+    speak:none;
+    display:inline-block;
+    text-decoration:inherit;
+    width:1em;
+    margin-right:.2em;
+    text-align:center;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1em;
+    margin-left:.2em;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale
+}
+.notify-info:before {
+    content:"\f05a";
+}
+.notify-success:before {
+    content:'\f00c';
+}
+.notify-warning:before {
+    content:'\f071';
+}
+.notify-error:before {
+    content:'\f057';
+}
+.notify-info {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+.notify-success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.notify-warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+.notify-error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}

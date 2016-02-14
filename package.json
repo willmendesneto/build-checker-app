@@ -1,13 +1,13 @@
 {
-  "name": "electron-es6-react",
+  "name": "build-checker-app",
   "version": "0.0.1",
   "main": "bootstrapper.js",
   "license": "MIT",
   "repository": "https://github.com/willmendesneto/build-checker-app",
   "scripts": {
     "start": "gulp serve",
-    "build": "export NODE_ENV='production'; gulp bower:install && gulp inject:css && gulp clean && electron-packager . $npm_package_productName --platform=darwin --arch=x64 --overwrite --out=dist --ignore='^/dist$' --prune --version=$npm_package_electronVersion",
-    "build:asar": "export NODE_ENV='production'; gulp bower:install && gulp inject:css && gulp clean && electron-packager . $npm_package_productName --platform=darwin --arch=x64 --overwrite --out=dist --ignore='^/dist$' --prune --asar --version=$npm_package_electronVersion"
+    "build": "export NODE_ENV='production'; gulp inject:css && electron-packager . BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=dist --ignore='^/(bower_components|dist|cache|sass)$' --prune --version=$npm_package_electronVersion",
+    "build:asar": "export NODE_ENV='production'; gulp inject:css && electron-packager . BuildCheckerApp --platform=all --arch=all --overwrite --out=dist --ignore='^/(bower_components|dist|cache|sass)$' --prune --asar --version=$npm_package_electronVersion"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",

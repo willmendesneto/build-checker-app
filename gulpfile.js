@@ -65,7 +65,7 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('sass:compile', function() {
-  return gulp.src('src/styles/**/*.scss')
+  return gulp.src('sass/**/*.scss')
     .pipe($.sass())
     .pipe($.concat('main.css'))
     .pipe($.minifyCss())
@@ -74,7 +74,7 @@ gulp.task('sass:compile', function() {
 
 gulp.task('serve', ['bower:install', 'inject:css', 'run:electron'], function () {
   gulp.watch(['bower.json'], ['copy:bower:css']);
-  gulp.watch([srcDir + '/styles/**/*.css'], ['sass:compile']);
+  gulp.watch(['sass/**/*.scss', srcDir + '/styles/**/*.css'], ['sass:compile']);
 });
 
 gulp.task('bower:install', function(done){

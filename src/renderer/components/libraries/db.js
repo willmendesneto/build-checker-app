@@ -33,6 +33,7 @@ const getDBClient = (key) => {
     valueToAppend.interval = 30000;
     DB[key].push(valueToAppend);
     fs.writeFileSync(`${__dirname}/../../../data/db.json`, JSON.stringify(DB), 'utf-8');
+    return true;
   }
 
   const update = (valueToUpdate) => {
