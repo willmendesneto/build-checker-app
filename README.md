@@ -4,8 +4,9 @@ A simple app for check status CI status using Electron JS. For now BuildCheckerA
 
 CCTray format examples:
 
-Travis-CI: https://api.travis-ci.org/repos/<owner>/<repository>/cc.xml
-Snap-CI: https://snap-ci.com/<owner>/<repository>/branch/<branchname>/cctray.xml
+- Travis-CI: `https://api.travis-ci.org/repos/<owner>/<repository>/cc.xml`
+
+- Snap-CI: `https://snap-ci.com/<owner>/<repository>/branch/<branchname>/cctray.xml`
 
 ## Installation
 
