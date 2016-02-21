@@ -5,7 +5,7 @@ import Menu from 'menu';
 import MenuItem from 'menu-item';
 
 let template = [{
-  label: 'Electron App',
+  label: 'BuildChecker App',
   submenu: [{
       label: 'Quit',
       accelerator: 'Command+Q',

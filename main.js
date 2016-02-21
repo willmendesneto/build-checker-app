@@ -59,14 +59,17 @@ let createMainWindow = (page, options) => {
     win.openDevTools();
 	}
 
-	win.setMenu(appMenu);
-
 	return win;
 
 }
 
+app.commandLine.appendSwitch('disable-renderer-backgrounding');
+
 app.on('ready', () => {
 	mainWindow = createMainWindow('index.html');
+
+	Menu.setApplicationMenu(appMenu);
+
   let sendEventFromPage = (customEventName) => {
     if (!mainWindow.isVisible()) {
       mainWindow.show();

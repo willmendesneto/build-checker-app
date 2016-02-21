@@ -6,5 +6,6 @@ bower_components/
 dist/
 cache/
 release/
+build/
 npm-debug.log
 .DS_Store
