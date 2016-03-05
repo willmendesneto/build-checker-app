@@ -1,11 +1,13 @@
 *.swo
 *.swp
 node_modules/
+releases/
 bower_components/
 .serve/
 dist/
 cache/
 release/
 build/
+tmp/
 npm-debug.log
 .DS_Store

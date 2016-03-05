@@ -8,8 +8,10 @@
   "repository": "https://github.com/willmendesneto/build-checker-app",
   "scripts": {
     "start": "gulp serve",
-    "build": "export NODE_ENV='production'; gulp build && electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=dist --prune --version=$npm_package_electronVersion",
-    "build:asar": "export NODE_ENV='production'; gulp inject:css && electron-packager . BuildCheckerApp --platform=all --arch=all --overwrite --out=dist --ignore='^/(bower_components|dist|cache|sass)$' --prune --asar --version=$npm_package_electronVersion"
+    "build": "export NODE_ENV='production'; gulp build && build-electronjs",
+    "build-electronjs": "electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --version=$npm_package_electronVersion",
+    "build-electronjs-asar": "electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --asar --version=$npm_package_electronVersion",
+    "build:asar": "export NODE_ENV='production'; gulp build && build-electronjs-asar"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
@@ -45,6 +47,7 @@
     "gulp-inject": "^3.0.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-minify-css": "^1.1.6",
+    "gulp-minify-html": "^1.0.5",
     "gulp-plumber": "^1.0.1",
     "gulp-sass": "^2.0.1",
     "gulp-sourcemaps": "^1.5.2",

@@ -16,6 +16,7 @@ var buffer = require('vinyl-buffer');
 var packageJson = require('./package.json');
 var optimist = require('optimist');
 var childProcess = require('child_process');
+var mkdirp = require('mkdirp');
 var argv = require('yargs').argv;
 
 var rootDir     = '.';
@@ -32,13 +33,14 @@ var releaseForOs = {
 };
 
 gulp.task('release', ['build'], function () {
-  if (argv.platform.toString() === 'false') {
+  if (!!argv.platform && argv.platform.toString() === 'false') {
     Object.keys(releaseForOs).forEach(function(operatingSystem) {
       utils.log('>>> Starting "' + operatingSystem + '" release ...');
       return releaseForOs[operatingSystem]();
     });
     return true;
   } else {
+    utils.log('>>> Starting "' + utils.os() + '" release ...');
     return releaseForOs[utils.os()]();
   }
 });
@@ -138,12 +140,14 @@ var paths = {
       '!utils.js',
       'index.html',
       'main.js',
-      'package.json'
+      'src/{assets,browser,renderer,styles}',
+      'bootstrapper.js'
     ]
 };
 
 gulp.task('copy:build:src', function() {
-  return gulp.src('src/**')
+  return gulp.src('src/{assets,browser,renderer,styles}')
+    .pipe($.plumber())
     .pipe(gulp.dest('./build/src'))
 });
 
@@ -152,8 +156,27 @@ gulp.task('copy:build:packages', function() {
     .pipe(gulp.dest('./build/node_modules'))
 });
 
-gulp.task('build', ['inject:css', 'copy:build:packages', 'copy:build:src', 'build:compress:images'], function() {
+gulp.task('copy:build:package:json', function() {
+  var pkg = require('./package.json');
+  pkg.devDependencies = {};
+  pkg.scripts = {};
+  pkg.xo = {};
+  mkdirp.sync('./build');
+  fs.writeFileSync('./build/package.json', JSON.stringify(pkg), 'utf8');
+});
+
+gulp.task('copy:build:data', function(done) {
+  var db = { repositories: [] };
+  mkdirp.sync('./build/src/data');
+  fs.writeFileSync('./build/src/data/db.json', JSON.stringify(db), 'utf8');
+  done();
+});
+
+
+gulp.task('build', ['inject:css', 'copy:build:packages', 'copy:build:src', 'build:compress:images', 'copy:build:package:json', 'copy:build:data'], function() {
   utils.log('>>> Build finished with success !');
   return gulp.src(paths.toCopy)
+    .pipe($.plumber())
+    .pipe($.if('**/*.html', $.minifyHtml({empty: true, quotes: true, comments: true})))
     .pipe(gulp.dest('./build'))
 });

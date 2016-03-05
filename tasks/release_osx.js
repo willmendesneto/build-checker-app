@@ -1,15 +1,17 @@
 'use strict';
 
 var Q = require('q');
-var mkdirp = require('mkdirp');
 var fs = require('fs');
+var gulp = require('gulp');
 var childProcess = require('child_process');
 var jetpack = require('fs-jetpack');
 var utils = require('../utils');
+var appdmg = require('appdmg');
 
 var projectDir;
 var releasesDir;
 var tmpDir;
+var buildDir;
 var finalAppDir;
 var manifest;
 
@@ -18,6 +20,7 @@ var init = function () {
     projectDir = jetpack;
 
     tmpDir = projectDir.dir('./tmp', { empty: true });
+    buildDir = projectDir.dir('./build', { empty: true });
     releasesDir = projectDir.dir('./releases');
     manifest = projectDir.read('./package.json', 'json');
     finalAppDir = tmpDir.cwd(manifest.productName + '.app');
@@ -25,12 +28,12 @@ var init = function () {
     return Q();
 };
 
-var copyRuntime = function () {
-    return projectDir.copyAsync('node_modules/electron-prebuilt/dist/Electron.app', finalAppDir.path());
+var copyBuildContentForTmpFolder = function () {
+  return gulp.src('./build/**').pipe(gulp.dest('./tmp'));
 };
 
 var copyBuiltApp = function () {
-    return projectDir.copyAsync('build', finalAppDir.path('Contents/Resources/app'));
+    return projectDir.copyAsync('./build', finalAppDir.path('BuildCheckerApp-darwin-x64/Contents/Resources/app'));
 };
 
 var finalize = function () {
@@ -41,7 +44,7 @@ var finalize = function () {
         identifier: manifest.identifier,
         version: manifest.version
     });
-    finalAppDir.write('Contents/Info.plist', info);
+    finalAppDir.write('BuildCheckerApp-darwin-x64/Contents/Info.plist', info);
 
     // Prepare Info.plist of Helper app
     info = projectDir.read('resources/osx/helper_app/Info.plist');
@@ -49,18 +52,16 @@ var finalize = function () {
         productName: manifest.productName,
         identifier: manifest.identifier
     });
-    finalAppDir.write('Contents/Frameworks/Electron Helper.app/Contents/Info.plist', info);
+    finalAppDir.write('BuildCheckerApp-darwin-x64/Contents/Frameworks/Electron Helper.app/BuildCheckerApp-darwin-x64/Contents/Info.plist', info);
 
     // Copy icon
-    projectDir.copy('resources/osx/icon.icns', finalAppDir.path('Contents/Resources/icon.icns'));
+    projectDir.copy('resources/osx/icon.icns', finalAppDir.path('BuildCheckerApp-darwin-x64/Contents/Resources/icon.icns'));
 
     return Q();
 };
 
 var packToDmgFile = function () {
     var deferred = Q.defer();
-
-    var appdmg = require('appdmg');
     var dmgName = manifest.name + '_' + manifest.version + '.dmg';
 
     // Prepare appdmg config
@@ -73,6 +74,7 @@ var packToDmgFile = function () {
     });
 
     fs.writeFileSync('./tmp/appdmg.json', dmgManifest, 'utf8');
+    fs.writeFileSync('./build/appdmg.json', dmgManifest, 'utf8');
 
     // Delete DMG file with this name if already exists
     releasesDir.remove(dmgName);
@@ -101,7 +103,7 @@ var cleanClutter = function () {
 
 module.exports = function () {
     return init()
-    .then(copyRuntime)
+    .then(copyBuildContentForTmpFolder)
     .then(copyBuiltApp)
     .then(finalize)
     .then(packToDmgFile)
