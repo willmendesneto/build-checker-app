@@ -18,7 +18,6 @@
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.3.13",
     "bluebird": "^3.1.5",
-    "history": "^1.17.0",
     "jquery": "^2.2.0",
     "node-notifier": "^4.4.0",
     "react": "^0.14.6",
@@ -58,21 +57,12 @@
     "gulp-watch": "^4.2.4",
     "lodash": "^4.0.0",
     "main-bower-files": "^2.8.0",
-    "merge2": "^0.3.5",
     "mkdirp": "^0.5.1",
     "optimist": "^0.6.1",
     "q": "^1.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "xo": "^0.12.1",
     "yargs": "^4.1.0"
-  },
-  "xo": {
-    "esnext": true,
-    "envs": [
-      "node",
-      "browser"
-    ]
   },
   "engine": "node >= 0.12"
 }

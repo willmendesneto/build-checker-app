@@ -86,7 +86,7 @@ app.on('ready', () => {
       sendEventFromPage('route:main');
     }
   }, {
-    label: 'Configurations',
+    label: 'Add repository',
     click: () => {
       sendEventFromPage('route:configurations');
     }

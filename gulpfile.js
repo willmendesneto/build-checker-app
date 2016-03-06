@@ -9,7 +9,6 @@ var del = require('del');
 var mainBowerFiles = require('main-bower-files');
 var electronServer = require('electron-connect').server;
 var packager = require('electron-packager');
-var merge = require('merge2');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');

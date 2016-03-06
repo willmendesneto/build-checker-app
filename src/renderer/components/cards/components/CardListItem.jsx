@@ -7,7 +7,15 @@ import UrlHelper from '../../helpers/UrlHelper';
 import RepositoryDataMapper from '../../helpers/repository-data-mapper';
 import ChannelRequest from '../../libraries/channel-request';
 import path from 'path';
-import { notify } from '../../libraries/notify';
+const notifier = require('node-notifier');
+
+/**
+ * Show OS level notification using node-notifier
+ */
+let notify = (options) => {
+  options.sound = true;
+  notifier.notify(options);
+};
 
 let resetFailObject = () => {
   return {
@@ -63,10 +71,7 @@ let CardListItem = React.createClass({
             failObject = resetFailObject();
             notify({
               title: 'Build Checker OK!',
-              subtitle: 'Now CI of "' + data.name + '" project is OK',
-              contentImage: '../../../../assets/images/build-success.ico',
-              icon: '../../../../assets/images/build-success.ico',
-              message: data.webUrl
+              message: 'Now CI of "' + data.name + '" project is OK. ' + data.webUrl
             });
           }
         } else {
@@ -77,10 +82,7 @@ let CardListItem = React.createClass({
 
             notify({
               title: 'Build Checker Failed',
-              subtitle: 'Somethink is wrong with your CI =(. Fix it!!!!',
-              contentImage: '../../../../assets/images/build-error.png',
-              icon: '../../../../assets/images/build-error.png',
-              message: data.webUrl
+              message: 'Somethink is wrong with your CI =(. Fix it!!!! ' + data.webUrl
             });
           }
           nextReturn = 'Somethink is wrong with your CI =(. Fix it!!!!';
