@@ -6,23 +6,8 @@ import request from 'request';
 import UrlHelper from '../../helpers/UrlHelper';
 import RepositoryDataMapper from '../../helpers/repository-data-mapper';
 import ChannelRequest from '../../libraries/channel-request';
-import notifier from 'node-notifier';
 import path from 'path';
-
-/**
- * Show OS level notification using node-notifier
- */
-let notify = (options) => {
-    let notifyOptions = {
-      sound: 'Bottle',
-      contentImage: '../../../../assets/images/app-icon.png',
-      icon: '../../../../assets/images/app-icon.png',
-      title: options.title,
-      subtitle: options.subtitle,
-      message: options.message
-    };
-    notifier.notify(notifyOptions);
-}
+import { notify } from '../../libraries/notify';
 
 let resetFailObject = () => {
   return {
@@ -121,6 +106,7 @@ let CardListItem = React.createClass({
     let buildCardClass = 'build-card ' + this.state.item.class;
     return (
       <div className={buildCardClass} key={this.props.id} id={this.props.id} >
+        <a className="build-card-remove" onClick={this.props.removeItem} value={this.props.id}>✖</a>
         <h2>{this.state.item.name}</h2>
         <p>
           <span className="build-icon">{this.state.item.buildIcon}</span>

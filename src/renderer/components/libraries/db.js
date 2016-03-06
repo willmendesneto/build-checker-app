@@ -61,7 +61,7 @@ const getDBClient = (key) => {
       return false;
     }
 
-    lengthBeforeDelete = DB[key].length;
+    let lengthBeforeDelete = DB[key].length;
     DB[key] = DB[key].filter((element, pos) => {
       return element.id !== id;
     });

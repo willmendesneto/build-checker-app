@@ -9,8 +9,8 @@
   "scripts": {
     "start": "gulp serve",
     "build": "export NODE_ENV='production'; gulp build && build-electronjs",
-    "build-electronjs": "electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --version=$npm_package_electronVersion",
-    "build-electronjs-asar": "electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --asar --version=$npm_package_electronVersion",
+    "build-electronjs": "gulp build && electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --version=$npm_package_electronVersion",
+    "build-electronjs-asar": "gulp build && electron-packager build BuildCheckerApp --platform=all --cache=cache --arch=all --overwrite --out=releases --ignore='^/(bower_components|dist|resources|tasks|cache|sass)$' --prune --asar --version=$npm_package_electronVersion",
     "build:asar": "export NODE_ENV='production'; gulp build && build-electronjs-asar"
   },
   "dependencies": {

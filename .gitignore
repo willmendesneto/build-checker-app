@@ -1,5 +1,6 @@
 *.swo
 *.swp
+src/styles/main.css
 node_modules/
 releases/
 bower_components/
