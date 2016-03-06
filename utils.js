@@ -38,7 +38,7 @@ module.exports.createFolderFromRelease = function() {
 
 
 /**
- * Log a message or series of messages using chalk's blue color.
+ * Log a message or series of messages using chalk's green color.
  * Can pass in a string, object or array.
  */
 module.exports.log = function(msg) {
@@ -46,11 +46,11 @@ module.exports.log = function(msg) {
     if (typeof(msg) === 'object') {
         for (var item in msg) {
             if (msg.hasOwnProperty(item)) {
-                $.util.log(gulpColors.blue(msg[item]));
+                $.util.log(gulpColors.green(msg[item]));
             }
         }
     } else {
-        $.util.log(gulpColors.blue(msg));
+        $.util.log(gulpColors.green(msg));
     }
 }
 

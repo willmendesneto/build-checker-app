@@ -5,8 +5,7 @@ import crashReporter from 'crash-reporter';
 import Tray from 'tray';
 import Menu from 'menu';
 import path from 'path';
-// import ipc from 'ipc';
-import appMenu from './src/browser/menu/appMenu';
+const appMenu = require('./src/browser/menu/appMenu');
 
 // prevent window being garbage collected
 let mainWindow = null;

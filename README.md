@@ -11,8 +11,8 @@ CCTray format examples:
 ## Installation
 
 ```bash
-git clone https://github.com/b52/electron-es6-react.git
-cd electron-es6-react
+git clone https://github.com/willmendesneto/build-checker-app.git
+cd build-checker-app
 npm install
 bower install
 gulp serve
@@ -21,7 +21,7 @@ gulp serve
 ## Package application
 
 ```bash
-npm run build
+npm run build-electronjs
 ```
 
 ## Directory structure

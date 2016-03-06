@@ -19,6 +19,7 @@ var mkdirp = require('mkdirp');
 var argv = require('yargs').argv;
 
 var rootDir     = '.';
+var buildDir     = 'build';
 var srcDir      = 'src';      // source directory
 var distDir     = 'dist';     // directory for serve:dist task
 var releaseDir  = 'release';  // directory for application packages
@@ -85,6 +86,12 @@ gulp.task('clean', function (done) {
   });
 });
 
+gulp.task('clean-outdated-build-content', function (done) {
+  del(['./build/renderer', './build/assets', './build/browser', './build/styles'], function () {
+    done();
+  });
+});
+
 gulp.task('sass:compile', function() {
   return gulp.src('sass/**/*.scss')
     .pipe($.sass())
@@ -101,8 +108,6 @@ gulp.task('serve', ['bower:install', 'inject:css', 'run:electron'], function () 
 
 gulp.task('bower:install', function(done){
   childProcess.exec('./node_modules/.bin/bower install', function (err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
     done(err);
   });
 });
@@ -116,6 +121,15 @@ gulp.task('run:electron', function(done){
   done();
 });
 
+gulp.task('run:electron:build', function(done){
+  childProcess.spawn(
+    process.platform !== 'win32'
+      ? './node_modules/.bin/electron'
+      : '.\\node_modules\\.bin\\electron.cmd'
+    , [buildDir, '--debug']);
+  done();
+});
+
 
 /**
  * Compress images
@@ -123,9 +137,9 @@ gulp.task('run:electron', function(done){
  */
 gulp.task('build:compress:images', function() {
   return gulp
-      .src('./build/src/assets/images/**')
-      .pipe($.imagemin({optimizationLevel: 3}))
-      .pipe(gulp.dest('./build/src/assets/images'));
+      .src('./src/assets/**')
+      .pipe($.if('**/*.{jpg,jpeg,png,icns,ico,svg}', $.imagemin({optimizationLevel: 3})))
+      .pipe(gulp.dest('./build/src/assets'));
 });
 
 
@@ -137,16 +151,18 @@ var paths = {
       '!{bower_components,cache,dist,resources,sass,tasks}/**',
       '!gulpfile.js',
       '!utils.js',
-      'index.html',
-      'main.js',
-      'src/{assets,browser,renderer,styles}',
-      'bootstrapper.js'
+      '!index.html',
+      '!main.js',
+      '!src/env.json',
+      'src/{browser,renderer,styles}/**',
+      '!bootstrapper.js'
     ]
 };
 
 gulp.task('copy:build:src', function() {
-  return gulp.src('src/{assets,browser,renderer,styles}')
+  return gulp.src(paths.toCopy)
     .pipe($.plumber())
+    .pipe($.if('**/*.html', $.minifyHtml({empty: true, quotes: true, comments: true})))
     .pipe(gulp.dest('./build/src'))
 });
 
@@ -164,6 +180,12 @@ gulp.task('copy:build:package:json', function() {
   fs.writeFileSync('./build/package.json', JSON.stringify(pkg), 'utf8');
 });
 
+gulp.task('copy:build:env:json', function() {
+  var pkg = require('./src/env.json');
+  pkg.ENV = 'PRODUCTION';
+  fs.writeFileSync('./build/src/env.json', JSON.stringify(pkg), 'utf8');
+});
+
 gulp.task('copy:build:data', function(done) {
   var db = { repositories: [] };
   mkdirp.sync('./build/src/data');
@@ -172,10 +194,10 @@ gulp.task('copy:build:data', function(done) {
 });
 
 
-gulp.task('build', ['inject:css', 'copy:build:packages', 'copy:build:src', 'build:compress:images', 'copy:build:package:json', 'copy:build:data'], function() {
+gulp.task('build', ['inject:css', 'copy:build:packages', 'copy:build:src', 'copy:build:package:json', 'copy:build:data', 'copy:build:env:json', 'build:compress:images'], function() {
   utils.log('>>> Build finished with success !');
-  return gulp.src(paths.toCopy)
+  return gulp.src(['./index.html', './bootstrapper.js', './main.js'])
     .pipe($.plumber())
     .pipe($.if('**/*.html', $.minifyHtml({empty: true, quotes: true, comments: true})))
-    .pipe(gulp.dest('./build'))
+    .pipe(gulp.dest('./build'));
 });
