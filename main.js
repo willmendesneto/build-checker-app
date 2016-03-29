@@ -1,11 +1,73 @@
-import app from 'app';
-import BrowserWindow from 'browser-window';
-import request from 'request';
-import crashReporter from 'crash-reporter';
-import Tray from 'tray';
-import Menu from 'menu';
-import path from 'path';
-const appMenu = require('./src/browser/menu/appMenu');
+/* eslint strict: 0 */
+'use strict';
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
+const electron = require('electron');
+const request = require('request');
+const fs = require('fs');
+const path = require('path');
+
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
+const crashReporter = electron.crashReporter;
+const shell = electron.shell;
+const Tray = electron.Tray;
+const CONFIG = require('./app/renderer/components/helpers/config');
+
+if (process.env.NODE_ENV === 'development') {
+  require('electron-debug')({
+    showDevTools: true
+  });
+}
+
+let template = [{
+  label: 'BuildChecker App',
+  submenu: [{
+      label: 'Quit',
+      accelerator: 'Command+Q',
+      click: function () {app.quit()},
+    },
+    { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+    { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+    { type: "separator" },
+    { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+    { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+    { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+    { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+  ]
+}];
+
+if (CONFIG.isDev()) {
+
+  template[0].submenu.push({
+    label: 'Reload',
+    accelerator: 'CmdOrCtrl+R',
+    click: function(item, focusedWindow) {
+      if (focusedWindow)
+        focusedWindow.reload();
+    }
+  });
+
+  template[0].submenu.push({
+    label: 'Toggle Developer Tools',
+    accelerator: (function() {
+      if (process.platform == 'darwin')
+        return 'Alt+Command+I';
+      else
+        return 'Ctrl+Shift+I';
+    })(),
+    click: function(item, focusedWindow) {
+      if (focusedWindow) {
+        focusedWindow.toggleDevTools();
+      }
+    }
+  });
+}
+
+const appMenu = Menu.buildFromTemplate(template);
 
 // prevent window being garbage collected
 let mainWindow = null;
@@ -21,27 +83,12 @@ let GITHUB_OPTIONS_REQUEST = {
   }
 };
 
-if( ['dev'].indexOf(process.env.NODE_ENV) >= 0){
-	// report crashes to the Electron project
-  crashReporter.start({
-    productName: 'Build Checker App',
-    companyName: 'willmendesneto',
-    // submitURL: 'https://your-domain.com/url-to-submit',
-    autoSubmit: false
-  });
-
-	// adds debug features like hotkeys for triggering dev tools and reload
-	require('electron-debug')({
-	    showDevTools: true
-	});
-}
-
 let createMainWindow = (page, options) => {
 	var defaultOptions = {
 		width: 940,
 		height: 600,
 		title: 'Build Checker App',
-		icon: './src/assets/images/app-icon.png',
+		icon: './app/assets/images/app-icon.png',
 		titleBarStyle: 'hidden'
 	};
 	defaultOptions = Object.assign({}, defaultOptions, options);
@@ -65,7 +112,7 @@ let createMainWindow = (page, options) => {
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
 app.on('ready', () => {
-	mainWindow = createMainWindow('index.html');
+	mainWindow = createMainWindow('app/app.html');
 
 	Menu.setApplicationMenu(appMenu);
 
@@ -76,7 +123,7 @@ app.on('ready', () => {
     mainWindow.webContents.send(customEventName);
   };
 
-  appIcon = new Tray(path.join(__dirname, 'src/assets/images/app-icon.png'));
+  appIcon = new Tray(path.join(__dirname, 'app/assets/images/app-icon.png'));
   appIcon.setToolTip('Build Checker App');
 
   let contextMenu = Menu.buildFromTemplate([{
