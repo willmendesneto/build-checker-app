@@ -2,16 +2,18 @@
 
 A simple app for check status CI status using Electron JS. For now BuildCheckerApp works with all CI/CD servers that response a CCTray XML file.
 
-CCTray format examples:
-
-- Travis-CI: `https://api.travis-ci.org/repos/<owner>/<repository>/cc.xml`
-
-- Snap-CI: `https://snap-ci.com/<owner>/<repository>/branch/<branchname>/cctray.xml`
-
-
-> Live editing development on desktop app
-
 [Electron](http://electron.atom.io/) app based on [React](https://facebook.github.io/react/), [Redux](https://github.com/reactjs/redux), [React Router](https://github.com/reactjs/react-router), [Webpack](http://webpack.github.io/docs/), [React Transform HMR](https://github.com/gaearon/react-transform-hmr) for rapid application development
+
+## CCTray format examples:
+
+### Travis-CI:
+
+- Public repositories: `https://api.travis-ci.org/repos/<owner>/<repository>/cc.xml`
+- Private repositories: `https://api.travis-ci.com/repositories/<owner>/<repository>.xml?token=<token>`
+
+### Snap-CI:
+
+- Public/private repositories: `https://snap-ci.com/<owner>/<repository>/branch/<branchname>/cctray.xml`
 
 ## Screenshot
 
@@ -86,7 +88,7 @@ To package apps for all platforms:
 $ npm run package-all
 ```
 
-#### Options
+## Options
 
 - --name, -n: Application name (default: ElectronReact)
 - --version, -v: Electron version (default: latest version)
@@ -98,7 +100,7 @@ Use `electron-packager` to pack your app with `--all` options for darwin (osx), 
 
 `test`, `tools`, `release` folder and devDependencies in `package.json` will be ignored by default.
 
-#### Default Ignore modules
+## Default Ignore modules
 
 We add some module's `peerDependencies` to ignore option as default for application size reduction.
 
@@ -107,6 +109,6 @@ We add some module's `peerDependencies` to ignore option as default for applicat
 
 > **Note:** If you want to use any above modules in runtime, for example: `require('babel/register')`, you should move them from `devDependencies` to `dependencies`.
 
-#### Building windows apps from non-windows platforms
+## Building windows apps from non-windows platforms
 
 Please checkout [Building windows apps from non-windows platforms](https://github.com/maxogden/electron-packager#building-windows-apps-from-non-windows-platforms).
