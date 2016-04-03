@@ -22,7 +22,7 @@ ChannelRequest = (function() {
     return new Promise(function(resolve, reject) {
       return callback(channelName, function(err) {
         if (err) {
-          reject(err);
+          reject(new Error(err));
         }
         return resolve();
       });
@@ -45,7 +45,7 @@ ChannelRequest = (function() {
         return;
       }
     }).catch(function(err) {
-      return console.error(err);
+      return err;
     });
   };
 
