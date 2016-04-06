@@ -3,26 +3,18 @@
 import React from 'react';
 import {Component, PropTypes} from 'react';
 import CardListItem from './CardListItem';
-const notifier = require('node-notifier');
-
-/**
- * Show OS level notification using node-notifier
- */
-let notify = (options) => {
-  options.sound = true;
-  notifier.notify(options);
-};
+import {notify} from '../../libraries/notificate';
 
 import DB from '../../libraries/db';
 let DBClient = DB.DBClient('repositories');
 
 const CardList = React.createClass({
 
-  removeCardListItem(id, e){
+  removeCardListItem(id, itemId, e){
     e.stopPropagation();
-    const itemToRemove = this.props.items[id];
+    let itemToRemove = this.props.items[id];
     const repoName = itemToRemove.name || itemToRemove.cctrayTrackingURL;
-    const removed = DBClient.remove(id + 1);
+    const removed = DBClient.remove(itemId);
     let message = '';
     let titleComplement = '';
     if (removed) {
@@ -51,7 +43,7 @@ const CardList = React.createClass({
                 name={item.name}
                 cctrayTrackingURL={item.cctrayTrackingURL}
                 interval={item.interval}
-                removeItem={this.removeCardListItem.bind(this, id)} />;
+                removeItem={this.removeCardListItem.bind(this, id, item.id)} />;
       }.bind(this)) : 'Please add a repository in "Add repository" option';
 
     return (

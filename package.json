@@ -117,12 +117,11 @@
     "history": "^2.0.1",
     "jquery": "^2.2.1",
     "lowdb": "^0.12.5",
-    "node-notifier": "^4.4.0",
     "query-string": "^4.0.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-router": "^2.0.0",
-    "request": "^2.65.0"
+    "request": "2.65.0"
   },
   "devEngines": {
     "node": "4.x || 5.x",

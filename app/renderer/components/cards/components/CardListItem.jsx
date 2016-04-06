@@ -7,15 +7,7 @@ import UrlHelper from '../../helpers/UrlHelper';
 import RepositoryDataMapper from '../../helpers/repository-data-mapper';
 import ChannelRequest from '../../libraries/channel-request';
 import path from 'path';
-const notifier = require('node-notifier');
-
-/**
- * Show OS level notification using node-notifier
- */
-let notify = (options) => {
-  options.sound = true;
-  notifier.notify(options);
-};
+import {notify} from '../../libraries/notificate';
 
 let resetFailObject = () => {
   return {
