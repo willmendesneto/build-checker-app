@@ -15,6 +15,10 @@ A simple app for check status CI status using Electron JS. For now BuildCheckerA
 
 - Public/private repositories: `https://snap-ci.com/<owner>/<repository>/branch/<branchname>/cctray.xml`
 
+### Circle CI:
+
+- Public/private repositories: `https://circleci.com/gh/<owner>/<repository>.cc.xml?circle-token=<token>`
+
 ## Screenshot
 
 ![](http://i.imgur.com/Yene0cP.gif?1)

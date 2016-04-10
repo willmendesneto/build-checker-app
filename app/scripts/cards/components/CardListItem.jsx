@@ -47,7 +47,7 @@ let CardListItem = React.createClass({
     let repository = this.props;
     let self = this;
 
-    channelRequest = new ChannelRequest(repository.name, (channelName, next) => {
+    channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
       request(repository.cctrayTrackingURL, (error, response, body) => {
         if (error) {

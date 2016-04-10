@@ -14,13 +14,7 @@ const FORM_STATES = {
 
 var Configuration = React.createClass({
   getInitialState: function() {
-    return {name: '', cctrayTrackingURL: '', formState: FORM_STATES.NOT_STARTED};
-  },
-
-  handleNameChange: function(e) {
-    if (e.target.value !== this.state.name) {
-      this.setState({name: e.target.value});
-    }
+    return {cctrayTrackingURL: '', formState: FORM_STATES.NOT_STARTED};
   },
 
   handleCCTrayTrackingURLChange: function(e) {
@@ -31,15 +25,14 @@ var Configuration = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
-    var name = this.state.name.trim();
     var cctrayTrackingURL = this.state.cctrayTrackingURL.trim();
-    if (!cctrayTrackingURL || !name) {
+    if (!cctrayTrackingURL) {
       this.setState({formState: FORM_STATES.INVALID});
       return;
     }
-    var inserted = DBClient.insert({name: name, cctrayTrackingURL: cctrayTrackingURL});
+    var inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
     if (inserted) {
-      this.setState({name: '', cctrayTrackingURL: '', formState: FORM_STATES.ADDED});
+      this.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED});
     } else {
       this.setState({formState: FORM_STATES.INVALID});
       setTimeout(function() {
@@ -64,13 +57,6 @@ var Configuration = React.createClass({
         <form className="pure-form pure-form-stacked" onSubmit={this.handleSubmit}>
           <fieldset>
             <legend className="title">Configurations</legend>
-
-            <label htmlFor="name">Repository name</label>
-            <input id="name" type="text"
-            className="pure-input-1"
-            placeholder="Repository name"
-            value={this.state.name}
-            onChange={this.handleNameChange} />
 
             <label htmlFor="cctrayTrackingURL">CCTray Repo URL</label>
             <input id="cctrayTrackingURL" type="text"

@@ -5,9 +5,9 @@ import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
 import { createHashHistory } from 'history'
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
-import Card from './renderer/components/cards/components/Card';
-import Configuration from './renderer/components/configurations/components/configuration';
-import About from './renderer/components/about/components/about';
+import Card from './scripts/cards/components/Card';
+import Configuration from './scripts/configurations/components/configuration';
+import About from './scripts/about/components/about';
 
 import './app.global.css';
 

@@ -1,5 +1,7 @@
 import 'babel-polyfill';
 import { jsdom } from 'jsdom';
+console.log(__dirname + './../app/');
+require('app-module-path').addPath(__dirname + './../app/');
 
 global.document = jsdom('<!doctype html><html><body></body></html>');
 global.window = document.defaultView;
@@ -15,3 +17,9 @@ window.localStorage = window.sessionStorage = {
     this[key] = undefined;
   },
 };
+
+Object.keys(window).forEach((key) => {
+    if (!(key in global)) {
+        global[key] = window[key];
+    }
+});

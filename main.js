@@ -15,7 +15,7 @@ const MenuItem = electron.MenuItem;
 const crashReporter = electron.crashReporter;
 const shell = electron.shell;
 const Tray = electron.Tray;
-const CONFIG = require('./app/renderer/components/helpers/config');
+const CONFIG = require('./app/scripts/helpers/config');
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')({

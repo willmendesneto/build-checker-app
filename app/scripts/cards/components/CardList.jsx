@@ -13,7 +13,7 @@ const CardList = React.createClass({
   removeCardListItem(id, itemId, e){
     e.stopPropagation();
     let itemToRemove = this.props.items[id];
-    const repoName = itemToRemove.name || itemToRemove.cctrayTrackingURL;
+    const repoName = itemToRemove.cctrayTrackingURL;
     const removed = DBClient.remove(itemId);
     let message = '';
     let titleComplement = '';
@@ -37,10 +37,10 @@ const CardList = React.createClass({
   render() {
     let CardListItems = this.props.items.length > 0 ?
       this.props.items.map(function(item, id) {
+
         return <CardListItem
                 key={item.id}
                 id={item.id}
-                name={item.name}
                 cctrayTrackingURL={item.cctrayTrackingURL}
                 interval={item.interval}
                 removeItem={this.removeCardListItem.bind(this, id, item.id)} />;
