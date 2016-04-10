@@ -18,8 +18,10 @@ export default {
         body: options.message
       });
 
-      if (options.onClick && typeof options.onClick === 'function') {
-        notification.onclick = options.onClick
+      if (!!options.onClickURL) {
+        notification.onclick = () => {
+          require('electron').shell.openExternal(options.onClickURL);
+        }
       }
     }
   }

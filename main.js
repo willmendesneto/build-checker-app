@@ -74,8 +74,10 @@ let mainWindow = null;
 let appIcon = null;
 
 let pkg = require('./package.json');
-let repo = pkg.repository.replace('https://github.com/', '');
-let GITHUB_OPTIONS_REQUEST = {
+const repo = pkg.repository.replace('https://github.com/', '');
+
+const RELEASE_URL = `${pkg.repository}/releases/latest`;
+const GITHUB_OPTIONS_REQUEST = {
 	url: `https://api.github.com/repos/${repo}/releases/latest`,
 	method: 'GET',
 	headers: {
@@ -142,15 +144,25 @@ app.on('ready', () => {
     label: 'Check for updates...',
     click: () => {
       request(GITHUB_OPTIONS_REQUEST, (error, response, body) => {
+
+        var options = {
+          title: 'Check for Updates',
+          message: ''
+        };
+
+        if (typeof body === 'string') {
+          body = JSON.parse(body);
+        }
+
         if (error) {
-          console.log(error);
-          return;
-        }
-        if (pkg.version ===  body.tag_name) {
-          console.log('You already using the latest version: ' + body.tag_name);
+          options.message = error;
+        } else if (pkg.version ===  body.tag_name.replace(/(?!-)[^0-9.]/g, '')) {
+          options.message = 'You already using the latest version: ' + body.tag_name;
         } else {
-          console.log('You are using an oldest version', body);
+          options.message = 'You are using an oldest version. Please click here for update your App';
+          options.onClickURL = RELEASE_URL;
         }
+        mainWindow.webContents.send('app:sendMessage', options);
       });
     }
   }, {

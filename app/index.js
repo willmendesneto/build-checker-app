@@ -9,6 +9,8 @@ import Card from './scripts/cards/components/Card';
 import Configuration from './scripts/configurations/components/configuration';
 import About from './scripts/about/components/about';
 
+import {notify} from './scripts/libraries/notificate';
+
 import './app.global.css';
 
 window.onload = function(){
@@ -48,4 +50,8 @@ ipc.on('route:main', function(){
 
 ipc.on('route:about', function(){
   appHistory.push('/about');
+});
+
+ipc.on('app:sendMessage', function(e, eventResponse){
+  notify(eventResponse);
 });
