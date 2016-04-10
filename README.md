@@ -19,9 +19,17 @@ A simple app for check status CI status using Electron JS. For now BuildCheckerA
 
 - Public/private repositories: `https://circleci.com/gh/<owner>/<repository>.cc.xml?circle-token=<token>`
 
+### Wercker CI:
+
+The Wercker CI use HTTP basic auth in your cctray url. For solve this, please use a trick using the URL itself, as specified in [RFC 1738](http://www.ietf.org/rfc/rfc1738.txt). Simply pass the user/pass before the host with an `@` sign.
+
+- Public/private repositories: `https://<your-wercker-username>:<your-wercker-password>@app.wercker.com/api/v2/applications/<your-wercker-project-id>/cc/build`
+
+> For know more about the `<your-wercker-project-id>`, please access the post on Wercker Blog ["Build and deploy status notification with the cctray feed"](http://blog.wercker.com/2013/07/12/Build-and-deploy-status-notifications-with-cctray-feed.html)
+
 ## Screenshot
 
-![](http://i.imgur.com/Yene0cP.gif?1)
+![Build Checker App](http://i.imgur.com/Yene0cP.gif?1)
 
 ## Install
 
