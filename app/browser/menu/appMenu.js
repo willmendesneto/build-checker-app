@@ -3,7 +3,6 @@
 import app from 'app';
 import Menu from 'menu';
 import MenuItem from 'menu-item';
-import fs from 'fs';
 const CONFIG = require('./../../renderer/components/helpers/config');
 
 let template = [{

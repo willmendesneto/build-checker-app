@@ -5,7 +5,6 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 const electron = require('electron');
 const request = require('request');
-const fs = require('fs');
 const path = require('path');
 
 const app = electron.app;

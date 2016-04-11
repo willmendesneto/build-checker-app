@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 let DB = null;
 const low = require('lowdb');
 const storage = require('lowdb/browser');
