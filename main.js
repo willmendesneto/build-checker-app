@@ -111,6 +111,7 @@ let createMainWindow = (page, options) => {
 }
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
+app.dock.hide();
 
 app.on('ready', () => {
 	mainWindow = createMainWindow('app/app.html');
