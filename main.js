@@ -122,6 +122,9 @@ app.on('ready', () => {
     if (!mainWindow.isVisible()) {
       mainWindow.show();
     }
+    if (!mainWindow.isFocused()) {
+      mainWindow.focus()
+    }
     mainWindow.webContents.send(customEventName);
   };
 
@@ -168,7 +171,7 @@ app.on('ready', () => {
   }, {
     label: 'About',
     click: () => {
-      mainWindow.webContents.send('route:about');
+      sendEventFromPage('route:about');
     }
   }, {
     label: 'Quit',
