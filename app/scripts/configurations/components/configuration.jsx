@@ -14,7 +14,11 @@ const FORM_STATES = {
 
 var Configuration = React.createClass({
   getInitialState: function() {
-    return {cctrayTrackingURL: '', formState: FORM_STATES.NOT_STARTED};
+    return {
+      cctrayTrackingURL: '',
+      submitted: false,
+      formState: FORM_STATES.NOT_STARTED
+    };
   },
 
   handleCCTrayTrackingURLChange: function(e) {
@@ -25,20 +29,23 @@ var Configuration = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
-    var cctrayTrackingURL = this.state.cctrayTrackingURL.trim();
+    const cctrayTrackingURL = this.state.cctrayTrackingURL.trim();
     if (!cctrayTrackingURL) {
       this.setState({formState: FORM_STATES.INVALID});
       return;
     }
-    var inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
-    if (inserted) {
-      this.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED});
-    } else {
-      this.setState({formState: FORM_STATES.INVALID});
+    const inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
+    const self = this;
+    setTimeout(() => {
+      if (inserted) {
+        self.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED, submitted: false});
+      } else {
+        self.setState({formState: FORM_STATES.INVALID, submitted: false});
+      }
       setTimeout(function() {
-        this.setState({formState: FORM_STATES.NOT_STARTED});
-      }.bind(this), 2000);
-    }
+        self.setState({formState: FORM_STATES.NOT_STARTED});
+      }, 3000);
+    }, 1000);
   },
 
   render: function() {
@@ -48,6 +55,11 @@ var Configuration = React.createClass({
       message = <div className="notify-success"> ✔ Repository information added</div>;
     } else if (this.state.formState === FORM_STATES.INVALID) {
       message = <div className="notify-error"> ✖ All the fields are required</div>;
+    }
+
+    let className = 'button-xlarge pure-button pure-button-primary';
+    if (!!this.state.submitted) {
+      className += ' m-progress';
     }
 
     return (
@@ -64,8 +76,9 @@ var Configuration = React.createClass({
             placeholder="Repository name"
             value={this.state.cctrayTrackingURL}
             onChange={this.handleCCTrayTrackingURLChange} />
+            <br/><br/><br/>
 
-            <button type="submit" className="button-xlarge pure-button pure-button-primary">ADD</button>
+            <button type="submit" className={className} disabled={this.state.submitted}>ADD</button>
           </fieldset>
         </form>
       </div>
