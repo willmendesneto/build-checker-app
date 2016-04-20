@@ -6,6 +6,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 const electron = require('electron');
 const request = require('request');
 const path = require('path');
+const CONFIG = require('./app/scripts/helpers/config');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -14,7 +15,14 @@ const MenuItem = electron.MenuItem;
 const crashReporter = electron.crashReporter;
 const shell = electron.shell;
 const Tray = electron.Tray;
-const CONFIG = require('./app/scripts/helpers/config');
+const ipcMain = electron.ipcMain;
+
+ipcMain.on('app:updateAppWithConfigInformations', function(event, config){
+  if (!config.showAppInDock) {
+    app.dock.hide();
+  }
+  event.sender.send('app:updateAppWithConfigInformationsCallback', {success: true});
+});
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')({
@@ -111,7 +119,6 @@ let createMainWindow = (page, options) => {
 }
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
-app.dock.hide();
 
 app.on('ready', () => {
 	mainWindow = createMainWindow('app/app.html');
@@ -172,6 +179,11 @@ app.on('ready', () => {
     label: 'About',
     click: () => {
       sendEventFromPage('route:about');
+    }
+  }, {
+    label: 'Preferences',
+    click: () => {
+      sendEventFromPage('route:preferences');
     }
   }, {
     label: 'Quit',

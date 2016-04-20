@@ -7,6 +7,8 @@ import {notify} from '../../libraries/notificate';
 
 import DB from '../../libraries/db';
 let DBClient = DB.DBClient('repositories');
+const DBConfig = DB.DBClient('configurations');
+let config = DBConfig.findAll()[0];
 
 const CardList = React.createClass({
 
@@ -37,7 +39,7 @@ const CardList = React.createClass({
   render() {
     let CardListItems = this.props.items.length > 0 ?
       this.props.items.map(function(item, id) {
-
+        item.interval = config.interval;
         return <CardListItem
                 key={item.id}
                 id={item.id}

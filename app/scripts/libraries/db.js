@@ -25,7 +25,6 @@ const getDBClient = (key) => {
 
   const insert = (valueToAppend) => {
     valueToAppend.id = DB(key).size() + 1;
-    valueToAppend.interval = 30000;
 
     DB(key).push(valueToAppend);
     DB.write();
