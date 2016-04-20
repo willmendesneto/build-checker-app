@@ -35,14 +35,17 @@ const getDBClient = (key) => {
   const update = (valueToUpdate) => {
     var valueWasUpdated = false;
     let database = DB(key).cloneDeep();
+    let updatedDB = [];
 
-    database = database.forEach(element => {
-      if ( element.id === item.id){
+    database.forEach(element => {
+      if ( element.id === valueToUpdate.id){
         element = valueToUpdate;
         valueWasUpdated = true;
       }
-      return element;
+      updatedDB.push(element);
     });
+
+    DB.object[key] = updatedDB;
     if (valueWasUpdated) {
       DB.write();
     }
