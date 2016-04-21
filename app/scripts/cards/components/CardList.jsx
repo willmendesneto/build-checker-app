@@ -6,7 +6,7 @@ import CardListItem from './CardListItem';
 import {notify} from '../../libraries/notificate';
 
 import DB from '../../libraries/db';
-let DBClient = DB.DBClient('repositories');
+const DBClient = DB.DBClient('repositories');
 const DBConfig = DB.DBClient('configurations');
 let config = DBConfig.findAll()[0];
 
@@ -14,7 +14,7 @@ const CardList = React.createClass({
 
   removeCardListItem(id, itemId, e){
     e.stopPropagation();
-    let itemToRemove = this.props.items[id];
+    const itemToRemove = this.props.items.filter(item => item.id === itemId)[0];
     const repoName = itemToRemove.cctrayTrackingURL;
     const removed = DBClient.remove(itemId);
     let message = '';
