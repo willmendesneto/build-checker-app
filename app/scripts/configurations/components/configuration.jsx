@@ -29,6 +29,7 @@ var Configuration = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
+    this.setState({submitted: true});
     const cctrayTrackingURL = this.state.cctrayTrackingURL.trim();
     if (!cctrayTrackingURL) {
       this.setState({formState: FORM_STATES.INVALID});
@@ -42,7 +43,7 @@ var Configuration = React.createClass({
       } else {
         self.setState({formState: FORM_STATES.INVALID, submitted: false});
       }
-      setTimeout(function() {
+      setTimeout(() => {
         self.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);
