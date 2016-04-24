@@ -36,15 +36,14 @@ var Configuration = React.createClass({
       return;
     }
     const inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
-    const self = this;
     setTimeout(() => {
       if (inserted) {
-        self.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED, submitted: false});
+        this.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED, submitted: false});
       } else {
-        self.setState({formState: FORM_STATES.INVALID, submitted: false});
+        this.setState({formState: FORM_STATES.INVALID, submitted: false});
       }
       setTimeout(() => {
-        self.setState({formState: FORM_STATES.NOT_STARTED});
+        this.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);
   },

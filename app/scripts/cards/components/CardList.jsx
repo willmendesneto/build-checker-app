@@ -3,6 +3,7 @@
 import React from 'react';
 import {Component, PropTypes} from 'react';
 import CardListItem from './CardListItem';
+import CardStore from '../stores/CardStore';
 import {notify} from '../../libraries/notificate';
 
 import DB from '../../libraries/db';
@@ -12,15 +13,21 @@ let config = DBConfig.findAll()[0];
 
 const CardList = React.createClass({
 
+  getInitialState() {
+    return {
+      items: []
+    };
+  },
+
   removeCardListItem(id, itemId, e){
     e.stopPropagation();
-    const itemToRemove = this.props.items.filter(item => item.id === itemId)[0];
+    const itemToRemove = this.state.items.filter(item => item.id === itemId)[0];
     const repoName = itemToRemove.cctrayTrackingURL;
     const removed = DBClient.remove(itemId);
     let message = '';
     let titleComplement = '';
     if (removed) {
-      this.props.items.splice(id, 1);
+      this.loadData();
       titleComplement = 'OK';
       message = `The repository "${repoName}" was removed`;
     } else {
@@ -33,12 +40,23 @@ const CardList = React.createClass({
       message: message
     });
     console.log('removed', message);
-    this.forceUpdate();
+  },
+
+  componentDidMount() {
+    this.loadData();
+  },
+
+  loadData() {
+    CardStore.getAll().then(function(items) {
+      this.setState({
+        items: items
+      });
+    }.bind(this));
   },
 
   render() {
-    let CardListItems = this.props.items.length > 0 ?
-      this.props.items.map(function(item, id) {
+    let CardListItems = this.state.items.length > 0 ?
+      this.state.items.map(function(item, id) {
         item.interval = config.interval;
         return <CardListItem
                 key={item.id}
