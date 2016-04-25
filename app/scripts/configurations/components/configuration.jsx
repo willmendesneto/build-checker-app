@@ -12,6 +12,7 @@ const FORM_STATES = {
   ADDED: 'ADDED'
 };
 
+let timeoutId = null;
 var Configuration = React.createClass({
   getInitialState: function() {
     return {
@@ -19,6 +20,10 @@ var Configuration = React.createClass({
       submitted: false,
       formState: FORM_STATES.NOT_STARTED
     };
+  },
+
+  componentWillUnmount() {
+    clearTimeout(timeoutId);
   },
 
   handleCCTrayTrackingURLChange: function(e) {
@@ -36,13 +41,13 @@ var Configuration = React.createClass({
       return;
     }
     const inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       if (inserted) {
         this.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED, submitted: false});
       } else {
         this.setState({formState: FORM_STATES.INVALID, submitted: false});
       }
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         this.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);

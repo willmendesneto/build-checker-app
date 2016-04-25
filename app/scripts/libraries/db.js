@@ -52,7 +52,6 @@ const getDBClient = (key) => {
     return valueWasUpdated;
   }
 
-
   const remove = (id) => {
     if (!keyExistInDB(key)) {
       return false;

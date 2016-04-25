@@ -23,14 +23,20 @@ if (!config) {
   config = defaultConfig;
 }
 
+let timeoutId = null;
+
 const Configuration = React.createClass({
   getInitialState() {
     return {
       submitted: false,
       interval: milisecondsToSeconds(config.interval),
-      showAppInDock: config.showAppInDock || true,
+      showAppInDock: config.showAppInDock,
       formState: FORM_STATES.NOT_STARTED
     };
+  },
+
+  componentWillUnmount() {
+    clearTimeout(timeoutId);
   },
 
   handlePollInterval(e) {
@@ -62,7 +68,7 @@ const Configuration = React.createClass({
     };
     const updated = DBConfig.update(updatedConfigurations);
     const self = this;
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       if (updated) {
         ipc.send('app:updateAppWithConfigInformations', updatedConfigurations);
         self.setState({formState: FORM_STATES.ADDED, submitted: false});
@@ -70,7 +76,7 @@ const Configuration = React.createClass({
         self.setState({formState: FORM_STATES.INVALID, submitted: false});
       }
 
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         self.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);
