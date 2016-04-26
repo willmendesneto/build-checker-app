@@ -1,10 +1,14 @@
 import path from 'path';
 
+import DB from './db';
+const DBConfig = DB.DBClient('configurations');
+
 export default {
   notify: (opts) => {
-    if (!Notification) {
-      alert('Desktop notifications not available in your browser. Try Chromium.');
-      return;
+    const config = DBConfig.findAll()[0];
+
+    if (!config.notificationsIsEnabled) {
+      return true;
     }
 
     if (Notification.permission === 'granted'){

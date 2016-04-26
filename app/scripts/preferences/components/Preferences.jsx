@@ -18,7 +18,11 @@ let config = DBConfig.findAll()[0];
 
 if (!config) {
   const DEFAULT_INTERVAL = 30000;
-  const defaultConfig = {showAppInDock: true, interval: DEFAULT_INTERVAL};
+  const defaultConfig = {
+    showAppInDock: true,
+    notificationsIsEnabled: true,
+    interval: DEFAULT_INTERVAL
+  };
   DBConfig.insert(defaultConfig);
   config = defaultConfig;
 }
@@ -31,6 +35,7 @@ const Configuration = React.createClass({
       submitted: false,
       interval: milisecondsToSeconds(config.interval),
       showAppInDock: config.showAppInDock,
+      enableDesktopNotification: config.enableDesktopNotification,
       formState: FORM_STATES.NOT_STARTED
     };
   },
@@ -45,6 +50,12 @@ const Configuration = React.createClass({
     }
   },
 
+  handleEnableDesktopNotification(e) {
+    if (e.target.value !== this.state.enableDesktopNotification) {
+      this.setState({enableDesktopNotification: e.target.checked});
+    }
+  },
+
   handleShowAppInDock(e) {
     if (e.target.value !== this.state.showAppInDock) {
       this.setState({showAppInDock: e.target.checked});
@@ -56,6 +67,7 @@ const Configuration = React.createClass({
     this.setState({submitted: true});
     const interval = parseInt(this.state.interval);
     const showAppInDock = !!this.state.showAppInDock;
+    const enableDesktopNotification = !!this.state.enableDesktopNotification;
     if (interval <= 0) {
       this.setState({formState: FORM_STATES.INVALID, submitted: false});
       return;
@@ -64,6 +76,7 @@ const Configuration = React.createClass({
     const updatedConfigurations = {
       interval: secondsToMiliseconds(interval),
       showAppInDock: showAppInDock,
+      enableDesktopNotification: enableDesktopNotification,
       id: config.id
     };
     const updated = DBConfig.update(updatedConfigurations);
@@ -104,6 +117,12 @@ const Configuration = React.createClass({
           <fieldset>
             <legend className="title">Preferences</legend>
 
+            <label htmlFor="enableDesktopNotification">Enable Desktop Notifications?</label>
+            <input id="enableDesktopNotification"
+              type="checkbox"
+              checked={this.state.enableDesktopNotification}
+              onChange={this.handleEnableDesktopNotification}
+              value={this.state.enableDesktopNotification} />
 
             <label htmlFor="showAppInDock">Show app in dock <i>(just for MacOS users)</i></label>
             <input id="showAppInDock"

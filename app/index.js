@@ -16,7 +16,11 @@ let config = DBConfig.findAll()[0];
 
 if (!config) {
   const DEFAULT_INTERVAL = 30000;
-  const defaultConfig = {showAppInDock: true, interval: DEFAULT_INTERVAL};
+  const defaultConfig = {
+    showAppInDock: true,
+    notificationsIsEnabled: true,
+    interval: DEFAULT_INTERVAL
+  };
   DBConfig.insert(defaultConfig);
   config = defaultConfig;
 }
