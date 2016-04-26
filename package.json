@@ -6,6 +6,7 @@
   "repository": "https://github.com/willmendesneto/build-checker-app",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "scripts": {
+    "build-css": "node-sass app/styles/main.scss app/app.global.css --output-style compressed -w --recursive app/styles",
     "new-test": "NODE_PATH=$NODE_PATH:$PWD/src/js:$PWD/src/js/components mocha --compilers js:babel-core/register --require ignore-styles --require ./test/test_helper.js './src/js/**/*_spec.@(js|jsx)'",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --recursive --require ./test/setup.js test/**/*.spec.js",
     "test-watch": "npm test -- --watch",
@@ -18,7 +19,7 @@
     "package": "cross-env NODE_ENV=production node package.js",
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
-    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
+    "dev": "concurrently --kill-others \"npm run build-css\" \"npm run hot-server\" \"npm run start-hot\""
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -90,7 +91,7 @@
     "minimist": "^1.2.0",
     "mocha": "^2.3.0",
     "node-libs-browser": "^1.0.0",
-    "node-sass": "^3.4.2",
+    "node-sass": "^3.6.0",
     "postcss": "^5.0.18",
     "rcedit": "^0.4.0",
     "react-addons-test-utils": "^0.14.2",

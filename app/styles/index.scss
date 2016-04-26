@@ -68,11 +68,37 @@ h1 {
 	font-weight: bold;
 	color: #D94341;
 }
+
+.build-card.pending{
+	border-left: 10px solid #D94341;
+	color: #F1C40F;
+}
+
+.build-card.pending a {
+	font-weight: bold;
+	color: #F1C40F;
+}
+
 .build-card .build-icon {
 	font-size: 30px;
 }
+
+.build-card.unknown{
+	border-left: 10px solid #D94341;
+	color: #969896;
+}
+
+.build-card.unknown a {
+	font-weight: bold;
+	color: #969896;
+}
+
 .build-card .build-card-remove,
-.build-card.success .build-card-remove {
+.build-card.success .build-card-remove,
+.build-card.error .build-card-remove,
+.build-card.pending .build-card-remove,
+.build-card.unknown .build-card-remove
+ {
 	cursor: pointer;
   display: flex;
   font-size: 20px;
@@ -100,4 +126,8 @@ h1 {
 
 .main {
 	padding-bottom: 50px;
+}
+
+.pure-form legend {
+  font-size: 20px;
 }
