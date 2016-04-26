@@ -58,7 +58,7 @@ let CardListItem = React.createClass({
         const data = RepositoryDataMapper.parse(body);
         let nextReturn = null;
 
-        if( data.lastBuildStatus === 'Success' ) {
+        if( data.lastBuildStatus !== 'Failure' ) {
           if ( failObject.name !== null ) {
             failObject = resetFailObject();
             notify({
