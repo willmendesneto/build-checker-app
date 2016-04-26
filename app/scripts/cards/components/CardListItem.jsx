@@ -6,6 +6,11 @@ import RepositoryDataMapper from '../../helpers/repository-data-mapper';
 import ChannelRequest from '../../libraries/channel-request';
 import path from 'path';
 import {notify} from '../../libraries/notificate';
+import CONFIG from '../../constants/AppConstants';
+
+const UNEXPECTED_BUILD_STATUSES = [
+  CONFIG.BUILD_STATUS_FAILURE
+];
 
 let resetFailObject = () => {
   return {
@@ -17,7 +22,8 @@ let channelRequest = null;
 
 let failObject = resetFailObject();
 let loadDataWasCalled = false;
-let CardListItem = React.createClass({
+
+const CardListItem = React.createClass({
   getInitialState() {
     return {
       item: {
@@ -56,7 +62,7 @@ let CardListItem = React.createClass({
         const data = RepositoryDataMapper.parse(body);
         let nextReturn = null;
 
-        if( data.lastBuildStatus !== 'Failure' ) {
+        if( UNEXPECTED_BUILD_STATUSES.indexOf(data.lastBuildStatus) === -1  ) {
           if ( failObject.name !== null ) {
             failObject = resetFailObject();
             notify({

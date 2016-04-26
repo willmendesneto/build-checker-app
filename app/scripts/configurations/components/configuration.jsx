@@ -5,7 +5,6 @@ import React from 'react';
 import DB from '../../libraries/db';
 let DBClient = DB.DBClient('repositories');
 
-
 const FORM_STATES = {
   NOT_STARTED: 'NOT_STARTED',
   INVALID: 'INVALID',
