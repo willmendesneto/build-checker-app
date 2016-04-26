@@ -52,6 +52,7 @@ $ cd <your-project-name> && npm install
 Run this two commands __simultaneously__ in different console tabs.
 
 ```bash
+$ npm run build-css
 $ npm run hot-server
 $ npm run start-hot
 ```
