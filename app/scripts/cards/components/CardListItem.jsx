@@ -26,6 +26,7 @@ let loadDataWasCalled = false;
 const CardListItem = React.createClass({
   getInitialState() {
     return {
+      isTheFirstRequest: true,
       item: {
         name: null,
         webUrl: null,
@@ -54,6 +55,7 @@ const CardListItem = React.createClass({
     channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
       request(repository.cctrayTrackingURL, (error, response, body) => {
+
         if (error) {
           return next(error);
         }
@@ -86,8 +88,10 @@ const CardListItem = React.createClass({
 
         self.setState({
           item: data,
+          isTheFirstRequest: false,
           failObject: failObject
         });
+
         return next(nextReturn);
       });
     });
@@ -101,11 +105,13 @@ const CardListItem = React.createClass({
   },
 
   render() {
-    let buildCardClass = 'build-card ' + this.state.item.class;
+    const loadingClass = this.state.isTheFirstRequest ? 'loading' : '';
+    const buildCardClass = 'build-card ' + loadingClass + ' ' + this.state.item.class;
+
     return (
       <div className={buildCardClass} key={this.props.id} id={this.props.id} >
         <a className="build-card-remove" onClick={this.props.removeItem} value={this.props.id}>✖</a>
-        <h2>{this.state.item.name}</h2>
+        <h2 className={loadingClass}>{this.state.item.name}</h2>
         <p>
           <span className="build-icon">{this.state.item.buildIcon}</span>
           <span className="build-url" onClick={this.handlerClick}>

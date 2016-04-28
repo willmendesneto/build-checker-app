@@ -1,3 +1,21 @@
+@-webkit-keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0
+  }
+  100% {
+    background-position: 468px 0
+  }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0
+  }
+  100% {
+    background-position: 468px 0
+  }
+}
+
 html,
 body {
 	padding: 0;
@@ -46,12 +64,25 @@ h1 {
 	color: #fff;
 	box-sizing: border-box;
   background-color: #fafafa;
+
+	transition: all .25s ease-in-out;
+	-moz-transition: all .25s ease-in-out;
+	-webkit-transition: all .25s ease-in-out;
+
   -webkit-box-shadow: 0 5px 8px -6px rgba(0,0,0,.4);
      -moz-box-shadow: 0 5px 8px -6px rgba(0,0,0,.4);
           box-shadow: 0 5px 8px -6px rgba(0,0,0,.4);
 }
+
+.build-card.loading {
+	background: #FFF;
+	border: 1px solid #eeeeee;
+	border-left: 10px solid #EEE;
+}
+
 .build-card h2 {
 	font-size: 24px;
+	height: 24px;
 	font-weight: bold;
 }
 .build-card .branch {
@@ -81,6 +112,7 @@ h1 {
 
 .build-card .build-icon {
 	font-size: 30px;
+	height: 30px;
 }
 
 .build-card.unknown{
