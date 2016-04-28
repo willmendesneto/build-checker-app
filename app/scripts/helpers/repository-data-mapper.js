@@ -10,13 +10,14 @@ const getClassByBuildStatus = (lastBuildStatus) => {
       statusClassname = CONFIG.CARD_SUCCESS_CLASS;
       break;
     case CONFIG.BUILD_STATUS_PENDING:
+    case CONFIG.BUILD_STATUS_UNKNOWN:
       statusClassname = CONFIG.CARD_PENDING_CLASS;
       break;
-    case CONFIG.BUILD_STATUS_UNKNOWN:
-    statusClassname = CONFIG.CARD_UNKNOWN_CLASS;
+    case CONFIG.BUILD_STATUS_FAILURE:
+      statusClassname = CONFIG.CARD_ERROR_CLASS;
       break;
     default:
-      statusClassname = CONFIG.CARD_ERROR_CLASS;
+      statusClassname = CONFIG.CARD_UNKNOWN_CLASS;
       break;
   }
   return statusClassname;
@@ -29,6 +30,7 @@ const getBuildIconByBuildStatus = (lastBuildStatus) => {
       statusBuildIcon = CONFIG.SUCCESS_ICON;
       break;
     case CONFIG.BUILD_STATUS_PENDING:
+    case CONFIG.BUILD_STATUS_UNKNOWN:
       statusBuildIcon = CONFIG.PENDING_ICON;
       break;
     default:

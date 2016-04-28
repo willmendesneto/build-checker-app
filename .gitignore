@@ -13,6 +13,7 @@ npm-debug.log
 # Logs
 logs
 *.log
+app/app.global.css
 
 # Runtime data
 pids
