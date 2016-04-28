@@ -7,7 +7,7 @@ export default {
   notify: (opts) => {
     const config = DBConfig.findAll()[0];
 
-    if (!config.notificationsIsEnabled) {
+    if (!config.enableDesktopNotification) {
       return true;
     }
 

@@ -20,7 +20,7 @@ if (!config) {
   const DEFAULT_INTERVAL = 30000;
   const defaultConfig = {
     showAppInDock: true,
-    notificationsIsEnabled: true,
+    enableDesktopNotification: true,
     interval: DEFAULT_INTERVAL
   };
   DBConfig.insert(defaultConfig);
