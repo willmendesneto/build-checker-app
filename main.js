@@ -120,20 +120,20 @@ let createMainWindow = (page, options) => {
 
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
-app.on('ready', () => {
-	mainWindow = createMainWindow('app/app.html');
+const sendEventFromPage = (customEventName) => {
+  if (!mainWindow.isVisible()) {
+    mainWindow.show();
+  }
+  if (!mainWindow.isFocused()) {
+    mainWindow.focus()
+  }
+  mainWindow.webContents.send(customEventName);
+};
+
+const onReady = () => {
+  mainWindow = createMainWindow('app/app.html');
 
 	Menu.setApplicationMenu(appMenu);
-
-  let sendEventFromPage = (customEventName) => {
-    if (!mainWindow.isVisible()) {
-      mainWindow.show();
-    }
-    if (!mainWindow.isFocused()) {
-      mainWindow.focus()
-    }
-    mainWindow.webContents.send(customEventName);
-  };
 
   appIcon = new Tray(path.join(__dirname, 'app/assets/images/app-icon.png'));
   appIcon.setToolTip('Build Checker App');
@@ -200,12 +200,25 @@ app.on('ready', () => {
       mainWindow.hide();
     }
   });
-});
+
+};
+
+app.on('ready', onReady);
 
 app.on('window-all-closed', app.quit);
 app.on('before-quit', () => {
     mainWindow.removeAllListeners('close');
     mainWindow.close();
+});
+app.on('activate', function () {
+
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    onReady();
+  } else {
+    sendEventFromPage('route:main');
+  }
 });
 
 process.on('error', function(err) {
