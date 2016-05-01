@@ -41,16 +41,15 @@ const CardListItem = React.createClass({
   },
 
   shouldComponentUpdate (nextProps, nextState) {
-    return this.state.item.lastBuildLabel !== nextState.item.lastBuildLabel;
+    return this.state.item.lastBuildLabel !== nextState.item.lastBuildLabel && !!channelRequest.longPolling;
   },
 
   componentWillUnmount() {
-    channelRequest.stopLongPolling = true;
+    channelRequest.stopLongPolling();
   },
 
   componentDidMount() {
     let repository = this.props;
-
     channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
       request(repository.cctrayTrackingURL, function(error, response, body) {
@@ -85,13 +84,15 @@ const CardListItem = React.createClass({
           nextReturn = 'Somethink is wrong with your CI =(. Fix it!!!!';
         }
 
-        this.setState({
-          item: data,
-          isTheFirstRequest: false,
-          failObject: failObject
-        });
+        if (!!channelRequest.longPolling) {
+          this.setState({
+            item: data,
+            isTheFirstRequest: false,
+            failObject: failObject
+          });
+          return next(nextReturn);
+        }
 
-        return next(nextReturn);
       }.bind(this));
     });
     channelRequest.startLongPolling(repository.interval);
