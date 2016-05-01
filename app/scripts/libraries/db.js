@@ -27,7 +27,7 @@ const getDBClient = (key) => {
     const database = DB(key).cloneDeep();
     const maxId = database.reduce((firstItem, secondItem) => {
       return firstItem.id > secondItem.id ? firstItem.id : secondItem.id;
-    }, {id: 0});
+    }, 0);
     valueToAppend.id = maxId + 1;
 
     DB(key).push(valueToAppend);
