@@ -50,11 +50,10 @@ const CardListItem = React.createClass({
 
   componentDidMount() {
     let repository = this.props;
-    let self = this;
 
     channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
-      request(repository.cctrayTrackingURL, (error, response, body) => {
+      request(repository.cctrayTrackingURL, function(error, response, body) {
 
         if (error) {
           return next(error);
@@ -86,14 +85,14 @@ const CardListItem = React.createClass({
           nextReturn = 'Somethink is wrong with your CI =(. Fix it!!!!';
         }
 
-        self.setState({
+        this.setState({
           item: data,
           isTheFirstRequest: false,
           failObject: failObject
         });
 
         return next(nextReturn);
-      });
+      }.bind(this));
     });
     channelRequest.startLongPolling(repository.interval);
   },
