@@ -7,6 +7,8 @@
     },
     "test": {
       "plugins": [
+				"transform-react-constant-elements",
+				"transform-react-inline-elements",
         ["webpack-loaders", { "config": "webpack.config.node.js", "verbose": false }]
       ]
     }
