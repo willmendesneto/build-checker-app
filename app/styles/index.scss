@@ -100,7 +100,69 @@ h1 {
 	color: #D94341;
 }
 
+@-webkit-keyframes blinkPendingCard {
+  0% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+  50% {
+    border-left: 10px solid #EFDD92;
+    color: #EFDD92;
+  }
+  100% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+}
+@-moz-keyframes blinkPendingCard {
+  0% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+  50% {
+    border-left: 10px solid #EFDD92;
+    color: #EFDD92;
+  }
+  100% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+}
+@-o-keyframes blinkPendingCard {
+  0% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+  50% {
+    border-left: 10px solid #EFDD92;
+    color: #EFDD92;
+  }
+  100% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+}
+@keyframes blinkPendingCard {
+  0% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+  50% {
+    border-left: 10px solid #EFDD92;
+    color: #EFDD92;
+  }
+  100% {
+    border-left: 10px solid #F1C40F;
+    color: #F1C40F;
+  }
+}
+
 .build-card.pending{
+  -webkit-animation: blinkPendingCard 3s infinite; /* Safari 4+ */
+  -moz-animation:    blinkPendingCard 3s infinite; /* Fx 5+ */
+  -o-animation:      blinkPendingCard 3s infinite; /* Opera 12+ */
+  animation:         blinkPendingCard 3s infinite;
+
 	border-left: 10px solid #F1C40F;
 	color: #F1C40F;
 }
