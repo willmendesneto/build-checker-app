@@ -71,6 +71,11 @@ const getDBClient = (key) => {
     return DB(key).size() === lengthBeforeDelete - 1;
   }
 
+  const removeAll = () => {
+    DB.object[key] = [];
+    DB.write();
+  };
+
   const findAll = () => {
     if (!keyExistInDB(key)) {
       return [];
@@ -78,10 +83,11 @@ const getDBClient = (key) => {
     return DB(key).cloneDeep();
   }
   return {
-    findAll: findAll,
-    insert: insert,
-    update: update,
-    remove: remove
+    findAll,
+    insert,
+    update,
+    removeAll,
+    remove
   };
 }
 
