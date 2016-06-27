@@ -53,7 +53,7 @@ const CardListItem = React.createClass({
     channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
       request(repository.cctrayTrackingURL, function(error, response, body) {
-
+        console.log('Request done from: ' + repository.cctrayTrackingURL);
         if (error) {
           return next(error);
         }
