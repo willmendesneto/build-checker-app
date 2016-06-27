@@ -106,6 +106,8 @@ h1 {
     color: #F1C40F;
   }
   50% {
+    border-bottom: 1px solid #DEDEDE;
+    border-right: 1px solid #DEDEDE;
     border-left: 10px solid #EFDD92;
     color: #EFDD92;
   }
@@ -120,6 +122,8 @@ h1 {
     color: #F1C40F;
   }
   50% {
+    border-bottom: 1px solid #DEDEDE;
+    border-right: 1px solid #DEDEDE;
     border-left: 10px solid #EFDD92;
     color: #EFDD92;
   }
@@ -134,6 +138,8 @@ h1 {
     color: #F1C40F;
   }
   50% {
+    border-bottom: 1px solid #DEDEDE;
+    border-right: 1px solid #DEDEDE;
     border-left: 10px solid #EFDD92;
     color: #EFDD92;
   }
@@ -144,24 +150,28 @@ h1 {
 }
 @keyframes blinkPendingCard {
   0% {
+    border: 1px solid transparent;
     border-left: 10px solid #F1C40F;
     color: #F1C40F;
   }
   50% {
+    border-bottom: 1px solid #DEDEDE;
+    border-right: 1px solid #DEDEDE;
     border-left: 10px solid #EFDD92;
     color: #EFDD92;
   }
   100% {
+    border: 1px solid transparent;
     border-left: 10px solid #F1C40F;
     color: #F1C40F;
   }
 }
 
 .build-card.pending{
-  -webkit-animation: blinkPendingCard 3s infinite; /* Safari 4+ */
-  -moz-animation:    blinkPendingCard 3s infinite; /* Fx 5+ */
-  -o-animation:      blinkPendingCard 3s infinite; /* Opera 12+ */
-  animation:         blinkPendingCard 3s infinite;
+  -webkit-animation: blinkPendingCard 2.5s infinite; /* Safari 4+ */
+  -moz-animation:    blinkPendingCard 2.5s infinite; /* Fx 5+ */
+  -o-animation:      blinkPendingCard 2.5s infinite; /* Opera 12+ */
+  animation:         blinkPendingCard 2.5s infinite;
 
 	border-left: 10px solid #F1C40F;
 	color: #F1C40F;
