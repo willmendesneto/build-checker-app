@@ -1,10 +1,13 @@
 'use babel';
 
 import React from 'react';
+import FileInput from 'react-file-input';
+import {notify} from '../../libraries/notificate';
 import ipc from 'ipc-renderer';
 
 import DB from '../../libraries/db';
 const DBConfig = DB.DBClient('configurations');
+const DBClient = DB.DBClient('repositories');
 
 const FORM_STATES = {
   NOT_STARTED: 'NOT_STARTED',
@@ -28,6 +31,10 @@ if (!config) {
 }
 
 let timeoutId = null;
+const comfirmationMessage = 'If you continue all your oldest content will be removed. Are you really sure?';
+const json = JSON.stringify({repositories: DBClient.findAll()});
+const blob = new Blob([json], {type: 'application/json'});
+const exportRepositoriesURL = URL.createObjectURL(blob);
 
 const Configuration = React.createClass({
   getInitialState() {
@@ -95,6 +102,52 @@ const Configuration = React.createClass({
     }, 1000);
   },
 
+  handleImportRepository(event) {
+    if (confirm(comfirmationMessage)) {
+      let fileContent = event.target.files[0];
+      if (!fileContent) {
+        notify({
+          title: 'Import repository dump',
+          message: 'Please check your file extension.'
+        });
+        return;
+      }
+      let message = '';
+      let reader = new FileReader();
+      reader.readAsText(fileContent, 'UTF-8');
+
+      reader.onload = (evt) => {
+        const dump = JSON.parse(evt.target.result);
+        const databaseKey = 'repositories';
+        if ( Object.keys(dump).indexOf(databaseKey) !== -1) {
+          DBClient.removeAll();
+          dump[databaseKey].map((repository) => {
+            return {
+              cctrayTrackingURL: repository.cctrayTrackingURL
+            };
+          }).forEach((repository) => {
+            DBClient.insert(repository);
+          });
+          message = 'Repository dump file imported with success';
+        } else {
+          message = 'Something wrong in your repository dump file.';
+        }
+
+        notify({
+          title: 'Import repository dump',
+          message: message
+        });
+      }
+      reader.onerror = (evt) => {
+        notify({
+          title: 'Import repository dump',
+          message: 'Please check your file and try again later.'
+        });
+        console.log(evt);
+      }
+    }
+  },
+
   render() {
 
     let message  = '';
@@ -142,9 +195,29 @@ const Configuration = React.createClass({
               inputMode="numeric"
               value={this.state.interval}
               onChange={this.handlePollInterval} />
-            <br/><br/><br/>
 
-            <button type="submit" className={className} disabled={this.state.submitted} >SAVE</button>
+            <label htmlFor="importRepository"><b>*</b> Import repository dump</label>
+            <FileInput
+              name="importRepository"
+              id="importRepository"
+              accept=".json"
+              placeholder="Add your repository dump file"
+              className="inputClass"
+              onChange={this.handleImportRepository} />
+            <br/><br/><br/>
+            <div>
+              <a
+                download="build-checker-repository-dump.json"
+                id="fileContents"
+                href={exportRepositoriesURL}
+                className="button-xlarge pure-button pure-button-primary export-button"
+                >EXPORT REPOSITORY DUMP</a>
+
+              <button
+                type="submit"
+                className={className}
+                disabled={this.state.submitted} >SAVE</button>
+            </div>
           </fieldset>
         </form>
       </div>
