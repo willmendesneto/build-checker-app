@@ -41,7 +41,7 @@ const CardListItem = React.createClass({
   },
 
   shouldComponentUpdate (nextProps, nextState) {
-    return this.state.item.lastBuildLabel !== nextState.item.lastBuildLabel && !!channelRequest.longPolling;
+    return this.state.item.class !== nextState.item.class && !!channelRequest.longPolling;
   },
 
   componentWillUnmount() {
@@ -49,15 +49,15 @@ const CardListItem = React.createClass({
   },
 
   componentDidMount() {
-    let repository = this.props;
+    let self = this;
+    let repository = self.props;
     channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
 
-      request(repository.cctrayTrackingURL, function(error, response, body) {
-        console.log('Request done from: ' + repository.cctrayTrackingURL);
+      request(repository.cctrayTrackingURL, (error, response, body) => {
         if (error) {
           return next(error);
         }
-        let failObject = this.state.failObject;
+        let failObject = self.state.failObject;
 
         const data = RepositoryDataMapper.parse(body);
         let nextReturn = null;
@@ -71,7 +71,6 @@ const CardListItem = React.createClass({
             });
           }
         } else {
-
           if ( failObject.name !== data.name && failObject.lastBuildLabel !== data.lastBuildLabel) {
             failObject.name = data.name;
             failObject.lastBuildLabel = data.lastBuildLabel;
@@ -85,7 +84,7 @@ const CardListItem = React.createClass({
         }
 
         if (!!channelRequest.longPolling) {
-          this.setState({
+          self.setState({
             item: data,
             isTheFirstRequest: false,
             failObject: failObject
@@ -93,7 +92,7 @@ const CardListItem = React.createClass({
           return next(nextReturn);
         }
 
-      }.bind(this));
+      });
     });
     channelRequest.startLongPolling(repository.interval);
   },
@@ -106,7 +105,7 @@ const CardListItem = React.createClass({
 
   render() {
     const loadingClass = this.state.isTheFirstRequest ? 'loading' : '';
-    const buildCardClass = 'build-card ' + loadingClass + ' ' + this.state.item.class;
+    const buildCardClass = 'build-card ' + loadingClass + ' ' + (this.state.item.class || '');
 
     return (
       <div className={buildCardClass} key={this.props.id} id={this.props.id} >
