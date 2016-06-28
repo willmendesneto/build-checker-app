@@ -2,9 +2,7 @@ let DB = null;
 const low = require('lowdb');
 const storage = require('lowdb/browser');
 
-
-let getDB = () => {
-
+const getDB = () => {
   if (DB !== null) {
     return DB;
   }

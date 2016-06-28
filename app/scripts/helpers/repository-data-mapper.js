@@ -5,7 +5,7 @@ import CONFIG from '../constants/AppConstants';
 
 const getClassByBuildStatus = (lastBuildStatus) => {
   let statusClassname = '';
-  switch(lastBuildStatus) {
+  switch (lastBuildStatus) {
     case CONFIG.BUILD_STATUS_SUCCESS:
       statusClassname = CONFIG.CARD_SUCCESS_CLASS;
       break;
@@ -25,7 +25,7 @@ const getClassByBuildStatus = (lastBuildStatus) => {
 
 const getBuildIconByBuildStatus = (lastBuildStatus) => {
   let statusBuildIcon = '';
-  switch(lastBuildStatus) {
+  switch (lastBuildStatus) {
     case CONFIG.BUILD_STATUS_SUCCESS:
       statusBuildIcon = CONFIG.SUCCESS_ICON;
       break;
@@ -40,19 +40,19 @@ const getBuildIconByBuildStatus = (lastBuildStatus) => {
   return statusBuildIcon;
 };
 
-let RepositoryDataMapper = {
+const RepositoryDataMapper = {
   parse: (data) => {
-    let xml = $($.parseXML(data));
-    return xml.find('Projects').map(function(){
-      let el = $(this).find('Project');
-      let lastBuildStatus = el.attr('lastBuildStatus');
+    const xml = $($.parseXML(data));
+    return xml.find('Projects').map(function() {
+      const el = $(this).find('Project');
+      const lastBuildStatus = el.attr('lastBuildStatus');
       return {
+        lastBuildStatus,
         name: el.attr('name'),
         webUrl: el.attr('webUrl'),
         lastBuildLabel: el.attr('lastBuildLabel'),
         lastBuildTime: el.attr('lastBuildTime'),
-        lastBuildStatus: lastBuildStatus,
-        buildIcon : getBuildIconByBuildStatus(lastBuildStatus),
+        buildIcon: getBuildIconByBuildStatus(lastBuildStatus),
         class: getClassByBuildStatus(lastBuildStatus)
       };
     })[0];

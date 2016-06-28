@@ -2,52 +2,53 @@
 
 import app from 'app';
 import Menu from 'menu';
-import MenuItem from 'menu-item';
 const CONFIG = require('./../../renderer/components/helpers/config');
 
-let template = [{
+const template = [{
   label: 'BuildChecker App',
-  submenu: [{
+  submenu: [
+    {
       label: 'Quit',
       accelerator: 'Command+Q',
-      click: function () {app.quit()},
+      click: () => app.quit()
     },
-    { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-    { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-    { type: "separator" },
-    { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-    { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-    { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-    { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+    { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+    { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+    { type: 'separator' },
+    { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+    { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+    { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+    { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
   ]
 }];
 
 if (CONFIG.isDev()) {
-
   template[0].submenu.push({
     label: 'Reload',
     accelerator: 'CmdOrCtrl+R',
-    click: function(item, focusedWindow) {
-      if (focusedWindow)
+    click: (item, focusedWindow) => {
+      if (focusedWindow) {
         focusedWindow.reload();
+      }
     }
   });
 
   template[0].submenu.push({
     label: 'Toggle Developer Tools',
-    accelerator: (function() {
-      if (process.platform == 'darwin')
+    accelerator: (() => {
+      if (process.platform === 'darwin') {
         return 'Alt+Command+I';
-      else
-        return 'Ctrl+Shift+I';
+      }
+      return 'Ctrl+Shift+I';
     })(),
-    click: function(item, focusedWindow) {
-      if (focusedWindow)
+    click: (item, focusedWindow) => {
+      if (focusedWindow) {
         focusedWindow.toggleDevTools();
+      }
     }
   });
 }
 
-let appMenu = Menu.buildFromTemplate(template);
+const appMenu = Menu.buildFromTemplate(template);
 
 module.exports = appMenu;
