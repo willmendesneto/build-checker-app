@@ -66,6 +66,17 @@ $ npm run dev
 *Note: requires a node version >= 4 and an npm version >= 2.*
 
 
+## Common issues
+
+If you are running the app in a unix environment, there's an issue about some specific operational system versions (until right now only happens in Ubuntu 0.14) that is about the integration between ElectronJS Tray component and OS. To solve this you need to install `libappindicator1` package using this command.
+
+```bash
+sudo apt-get update
+sudo apt-get install libappindicator1
+``
+
+If you find issues, please feel free to create a new issue in the repository :)
+
 ## Externals
 
 If you use any 3rd party libraries which can't be built with webpack, you must list them in your `webpack.config.base.js`：
