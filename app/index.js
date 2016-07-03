@@ -66,7 +66,10 @@ ipc.send('app:updateAppWithConfigInformations', config);
 
 ipc.on('route:configurations', () => appHistory.push('/configurations'));
 
-ipc.on('route:main', () => appHistory.push('/'));
+ipc.on('route:main', () => {
+  appHistory.push('/')
+  window.location.reload();
+});
 
 ipc.on('route:about', () => appHistory.push('/about'));
 
