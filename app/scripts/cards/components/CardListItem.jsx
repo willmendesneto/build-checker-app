@@ -10,14 +10,11 @@ import CONFIG from '../../constants/AppConstants';
 const execute = require('controlled-schedule');
 const milisecondsToSeconds = (time) => time / 1000;
 
-const UNEXPECTED_BUILD_STATUSES = [
-  CONFIG.BUILD_STATUS_FAILURE
-];
-
 let resetFailObject = () => {
   return {
     name: null,
-    lastBuildLabel: null
+    lastBuildLabel: null,
+    lastBuildStatus: null
   };
 };
 let longPolling = true;
@@ -98,6 +95,26 @@ const CardListItem = React.createClass({
     return failObject;
   },
 
+  onError(data) {
+    let failObject = this.state.failObject;
+
+    const responseHasDifferentName = failObject.name !== data.name;
+    const responseHasDifferentLastBuildLabel = failObject.lastBuildLabel !== data.lastBuildLabel;
+    const currentBuildIsFailing = CONFIG.BUILD_STATUS_FAILURE === data.lastBuildStatus;
+
+    if ( responseHasDifferentName && responseHasDifferentLastBuildLabel && currentBuildIsFailing) {
+      failObject.name = data.name;
+      failObject.lastBuildLabel = data.lastBuildLabel;
+      failObject.lastBuildStatus = data.lastBuildStatus;
+
+      notify({
+        title: 'Build Checker OK!',
+        message: `Somethink is wrong with your CI =(. Fix it!!!! ${data.webUrl}`
+      });
+    }
+    return failObject;
+  },
+
   startCICheckerScheduler() {
 
     schedule = execute(this.startCIChecker)
@@ -113,7 +130,7 @@ const CardListItem = React.createClass({
     .on('success', (data) => {
       if (schedulerHasBeingexecuted()) {
         let failObject = {};
-        const isAnBuildSuccessResponse = UNEXPECTED_BUILD_STATUSES.indexOf(data.lastBuildStatus) === -1;
+        const isAnBuildSuccessResponse = data.lastBuildStatus === CONFIG.BUILD_STATUS_SUCCESS;
         if (isAnBuildSuccessResponse) {
           failObject = this.onSuccess(data);
         } else {
