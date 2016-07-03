@@ -67,7 +67,7 @@ ipc.send('app:updateAppWithConfigInformations', config);
 ipc.on('route:configurations', () => appHistory.push('/configurations'));
 
 ipc.on('route:main', () => {
-  appHistory.push('/')
+  appHistory.push('/');
   window.location.reload();
 });
 

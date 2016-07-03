@@ -3,10 +3,12 @@ import { Link } from 'react-router';
 import request from 'request';
 import UrlHelper from '../../helpers/UrlHelper';
 import RepositoryDataMapper from '../../helpers/repository-data-mapper';
-import ChannelRequest from '../../libraries/channel-request';
 import path from 'path';
 import {notify} from '../../libraries/notificate';
 import CONFIG from '../../constants/AppConstants';
+
+const execute = require('controlled-schedule');
+const milisecondsToSeconds = (time) => time / 1000;
 
 const UNEXPECTED_BUILD_STATUSES = [
   CONFIG.BUILD_STATUS_FAILURE
@@ -18,10 +20,10 @@ let resetFailObject = () => {
     lastBuildLabel: null
   };
 };
-let channelRequest = null;
+let longPolling = true;
+let schedule = null;
 
-let failObject = resetFailObject();
-let loadDataWasCalled = false;
+const schedulerHasBeingexecuted = () => longPolling;
 
 const CardListItem = React.createClass({
   getInitialState() {
@@ -41,60 +43,96 @@ const CardListItem = React.createClass({
   },
 
   shouldComponentUpdate (nextProps, nextState) {
-    return this.state.item.class !== nextState.item.class && !!channelRequest.longPolling;
+    return this.state.item.class !== nextState.item.class && schedulerHasBeingexecuted();
   },
 
   componentWillUnmount() {
-    channelRequest.stopLongPolling();
+    schedule.stop();
   },
 
-  componentDidMount() {
-    let self = this;
-    let repository = self.props;
-    channelRequest = new ChannelRequest(repository.cctrayTrackingURL, (channelName, next) => {
+  startCIChecker() {
+    let repository = this.props;
+    return new Promise((resolve, reject) => {
+
+      if (!schedulerHasBeingexecuted()) {
+        return reject('Polling was stopped!');
+      }
 
       request(repository.cctrayTrackingURL, (error, response, body) => {
         if (error) {
-          return next(error);
+          return reject(error);
         }
-        let failObject = self.state.failObject;
 
         const data = RepositoryDataMapper.parse(body);
-        let nextReturn = null;
-
-        if( UNEXPECTED_BUILD_STATUSES.indexOf(data.lastBuildStatus) === -1  ) {
-          if ( failObject.name !== null ) {
-            failObject = resetFailObject();
-            notify({
-              title: 'Build Checker OK!',
-              message: 'Now CI of "' + data.name + '" project is OK. ' + data.webUrl
-            });
-          }
-        } else {
-          if ( failObject.name !== data.name && failObject.lastBuildLabel !== data.lastBuildLabel) {
-            failObject.name = data.name;
-            failObject.lastBuildLabel = data.lastBuildLabel;
-
-            notify({
-              title: 'Build Checker Failed',
-              message: 'Somethink is wrong with your CI =(. Fix it!!!! ' + data.webUrl
-            });
-          }
-          nextReturn = 'Somethink is wrong with your CI =(. Fix it!!!!';
-        }
-
-        if (!!channelRequest.longPolling) {
-          self.setState({
-            item: data,
-            isTheFirstRequest: false,
-            failObject: failObject
-          });
-          return next(nextReturn);
-        }
-
+        return resolve(data);
       });
     });
-    channelRequest.startLongPolling(repository.interval);
+  },
+
+  onSuccess(data) {
+    let failObject = this.state.failObject;
+    if ( failObject.name !== null ) {
+      failObject = resetFailObject();
+      notify({
+        title: 'Build Checker OK!',
+        message: `Now CI of "${data.name}" project is OK. ${data.webUrl}`
+      });
+    }
+
+    return failObject;
+
+  },
+
+  onError(data) {
+    let failObject = this.state.failObject;
+
+    if ( failObject.name !== data.name && failObject.lastBuildLabel !== data.lastBuildLabel) {
+      failObject.name = data.name;
+      failObject.lastBuildLabel = data.lastBuildLabel;
+
+      notify({
+        title: 'Build Checker Failed',
+        message: `Somethink is wrong with your CI =(. Fix it!!!! ${data.webUrl}`
+      });
+    }
+    return failObject;
+  },
+
+  startCICheckerScheduler() {
+
+    schedule = execute(this.startCIChecker)
+      .every(`${milisecondsToSeconds(this.props.interval)}s`);
+    schedule
+    .on('stop', (data) => {
+      console.log('stopped!');
+      longPolling = false;
+    })
+    .on('error', (err) => {
+      console.log(`Error: `, err);
+    })
+    .on('success', (data) => {
+      if (schedulerHasBeingexecuted()) {
+        let failObject = {};
+        const isAnBuildSuccessResponse = UNEXPECTED_BUILD_STATUSES.indexOf(data.lastBuildStatus) === -1;
+        if (isAnBuildSuccessResponse) {
+          failObject = this.onSuccess(data);
+        } else {
+          failObject = this.onError(data);
+        }
+
+        this.setState({
+          item: data,
+          isTheFirstRequest: false,
+          failObject
+        });
+      }
+    });
+    schedule.start();
+  },
+
+  componentWillMount() {
+    longPolling = true;
+    this.startCICheckerScheduler();
   },
 
   handlerClick(e) {
