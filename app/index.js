@@ -6,6 +6,7 @@ import { createHashHistory } from 'history';
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 import Card from './scripts/cards/components/Card';
+import Offline from './scripts/offline/components/offline';
 import Configuration from './scripts/configurations/components/configuration';
 import Preferences from './scripts/preferences/components/Preferences';
 import About from './scripts/about/components/about';
@@ -28,7 +29,36 @@ if (!config) {
 import { notify } from './scripts/libraries/notificate';
 import './app.global.css';
 
+let isOnline = navigator.onLine;
+
+const updateOnlineStatus = () => {
+  if (navigator.onLine && !isOnline) {
+    appHistory.push('/');
+
+    notify({
+      title: 'Build Checker Internet Status',
+      message: `We are online again!`
+    });
+
+  } else if (!navigator.onLine) {
+    appHistory.push('/offline');
+
+    notify({
+      title: 'Build Checker Internet Status',
+      message: `We are offline!`
+    });
+
+  }
+  isOnline = navigator.onLine;
+};
+
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline',  updateOnlineStatus);
+
 window.onload = () => {
+
+  updateOnlineStatus();
+
   setTimeout(() => {
     const node = document.getElementById('load-content');
     node.style.display = 'block';
@@ -43,6 +73,7 @@ window.onload = () => {
         node.parentNode.removeChild(node);
         ReactDOM.render(
           <Router history={appHistory} >
+            <Route path="/offline" name="offline" component={Offline} />
             <Route path="/" name="cards" component={Card} />
             <Route path="/configurations" name="configurations" component={Configuration} />
             <Route path="/preferences" name="preferences" component={Preferences} />
