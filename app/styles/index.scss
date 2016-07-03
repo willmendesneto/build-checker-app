@@ -197,29 +197,31 @@ h1 {
 	color: #969896;
 }
 
-.build-card .build-card-remove,
-.build-card.success .build-card-remove,
-.build-card.error .build-card-remove,
-.build-card.pending .build-card-remove,
-.build-card.unknown .build-card-remove
- {
-	cursor: pointer;
-  display: flex;
-  font-size: 20px;
-  line-height: 20px;
-  font-weight: 700;
-  color: #D94341;
-  padding: 10px;
-  height: 20px;
-  flex-direction: row-reverse;
+.build-card {
+  &.success,
+  &.error,
+  &.pending,
+  &.unknown {
+    .build-card-remove-wrapper {
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: 700;
+      color: #D94341;
+      padding: 10px;
+      text-align: right;
+
+      .build-card-remove {
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 6px 10px;
+        transition: background-color .3s, text-shadow .3s;
+      }
+    }
+  }
 }
 
 .build-card.success {
 	border-left: 10px solid #44A662;
-	color: #44A662;
-}
-.build-card.success a {
-	font-weight: bold;
 	color: #44A662;
 }
 

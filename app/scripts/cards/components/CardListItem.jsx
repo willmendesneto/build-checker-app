@@ -109,7 +109,9 @@ const CardListItem = React.createClass({
 
     return (
       <div className={buildCardClass} key={this.props.id} id={this.props.id} >
-        <a className="build-card-remove" onClick={this.props.removeItem} value={this.props.id}>✖</a>
+        <div className="build-card-remove-wrapper">
+          <a className="build-card-remove" onClick={this.props.removeItem} value={this.props.id}>✖</a>
+        </div>
         <h2 className={loadingClass}>{this.state.item.name}</h2>
         <p>
           <span className="build-icon">{this.state.item.buildIcon}</span>
