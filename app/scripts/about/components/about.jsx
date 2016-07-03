@@ -14,7 +14,7 @@ export default class About extends React.Component {
         <h1 className="title">Build Checker App</h1>
         <br />
         <br />
-        <p>Version: 0.0.8</p>
+        <p>Version: 0.0.9</p>
       </div>
     )
   }

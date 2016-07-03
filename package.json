@@ -1,6 +1,6 @@
 {
   "name": "build-checker-app",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "main.js",
   "productName": "BuildCheckerApp",
   "repository": "https://github.com/willmendesneto/build-checker-app",
