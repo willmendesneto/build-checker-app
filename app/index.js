@@ -40,6 +40,8 @@ const updateOnlineStatus = () => {
       message: `We are online again!`
     });
 
+    window.location.reload();
+
   } else if (!navigator.onLine) {
     appHistory.push('/offline');
 
