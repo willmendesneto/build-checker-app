@@ -73,7 +73,7 @@ If you are running the app in a unix environment, there's an issue about some sp
 ```bash
 sudo apt-get update
 sudo apt-get install libappindicator1
-``
+```
 
 If you find issues, please feel free to create a new issue in the repository :)
 
