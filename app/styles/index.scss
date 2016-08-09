@@ -81,6 +81,7 @@ h1 {
 }
 
 .build-card h2 {
+  margin-top: 40px;
 	font-size: 24px;
   height: 50px;
 	font-weight: bold;
@@ -198,27 +199,44 @@ h1 {
 }
 
 .build-card {
+
   &.success,
   &.error,
   &.pending,
   &.unknown {
+
     .build-card-remove-wrapper {
       font-size: 20px;
       line-height: 20px;
       font-weight: 700;
-      color: #D94341;
-      padding: 10px;
+      color: #888;
       text-align: right;
+      position: relative;
+      // display: inline-block;
 
       .build-card-remove {
         cursor: pointer;
         border-radius: 50%;
-        padding: 6px 10px;
+        padding: 10px;
+        float: right;
         transition: background-color .3s, text-shadow .3s;
+        position: absolute;
+        right: 10px;
+        display: block;
       }
     }
+
+    &:not(:hover) {
+      .build-card-remove {
+        display: none;
+        padding: 10px;
+      }
+    }
+
   }
 }
+
+
 
 .build-card.success {
 	border-left: 10px solid #44A662;
