@@ -6,27 +6,12 @@
   z-index: 999999;
 }
 
-.loader,
-.loader:before,
-.loader:after {
+.loader {
   background: #ffffff;
-  -webkit-animation: load1 1s infinite ease-in-out;
-  animation: load1 1s infinite ease-in-out;
+  -webkit-animation: bootstrap-app 1s infinite ease-in-out;
+  animation: bootstrap-app 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
-}
-.loader:before,
-.loader:after {
-  position: absolute;
-  top: 0;
-  content: '';
-}
-.loader:before {
-  left: -1.5em;
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-.loader {
   top: 33%;
   right: 50%;
   text-indent: -9999em;
@@ -38,11 +23,35 @@
   transform: translateZ(0);
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
+
+	&:before,
+	&:after {
+	  background: #ffffff;
+	  -webkit-animation: bootstrap-app 1s infinite ease-in-out;
+	  animation: bootstrap-app 1s infinite ease-in-out;
+	  width: 1em;
+	  height: 4em;
+	}
+
+	&:before,
+	&:after {
+		position: absolute;
+		top: 0;
+		content: '';
+	}
+
+	&:before {
+		left: -1.5em;
+		-webkit-animation-delay: -0.32s;
+		animation-delay: -0.32s;
+	}
+
+	&:after {
+	  left: 1.5em;
+	}
 }
-.loader:after {
-  left: 1.5em;
-}
-@-webkit-keyframes load1 {
+
+@-webkit-keyframes bootstrap-app {
   0%,
   80%,
   100% {
@@ -54,7 +63,7 @@
     height: 5em;
   }
 }
-@keyframes load1 {
+@keyframes bootstrap-app {
   0%,
   80%,
   100% {

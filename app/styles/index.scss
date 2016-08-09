@@ -54,6 +54,23 @@ h1 {
   font-size: 125%;
 }
 
+.build-url {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.main {
+	padding-bottom: 50px;
+}
+
+.pure-form legend {
+  font-size: 20px;
+}
+
+.export-button {
+  margin-right: 1em;
+}
+
 .build-card {
 	background: #fff;
 	margin: 8px;
@@ -74,32 +91,109 @@ h1 {
           box-shadow: 0 5px 8px -6px rgba(0,0,0,.4);
 }
 
-.build-card.loading {
-	background: #FFF;
-	border: 1px solid #eeeeee;
-	border-left: 10px solid #EEE;
+.build-card{
+
+  &.loading {
+  	background: #FFF;
+  	border: 1px solid #eeeeee;
+  	border-left: 10px solid #EEE;
+  }
+
+  h2 {
+    margin-top: 40px;
+    font-size: 24px;
+    height: 50px;
+    font-weight: bold;
+  }
+
+  .branch {
+  	font-weight: bold;
+  }
+  p {
+  	font-size: 14px;
+  }
+
+  &.error{
+  	border-left: 10px solid #D94341;
+  	color: #D94341;
+
+    a {
+    	font-weight: bold;
+    	color: #D94341;
+    }
+  }
+
+
+
+  &.pending{
+    -webkit-animation: blinkPendingCard 2.5s infinite; /* Safari 4+ */
+    -moz-animation:    blinkPendingCard 2.5s infinite; /* Fx 5+ */
+    -o-animation:      blinkPendingCard 2.5s infinite; /* Opera 12+ */
+    animation:         blinkPendingCard 2.5s infinite;
+
+  	border-left: 10px solid #F1C40F;
+  	color: #F1C40F;
+
+    a {
+    	font-weight: bold;
+    	color: #F1C40F;
+    }
+  }
+
+  .build-icon {
+  	font-size: 30px;
+  	height: 30px;
+  }
+
+  &.unknown{
+  	border-left: 10px solid #D94341;
+  	color: #969896;
+
+    a {
+      font-weight: bold;
+      color: #969896;
+    }
+  }
+
+  &.success,
+  &.error,
+  &.pending,
+  &.unknown {
+    .build-card-remove-wrapper {
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: 700;
+      color: #888;
+      text-align: right;
+      position: relative;
+
+      .build-card-remove {
+        cursor: pointer;
+        border-radius: 50%;
+        padding: 10px;
+        float: right;
+        transition: background-color .3s, text-shadow .3s;
+        position: absolute;
+        right: 10px;
+        display: block;
+      }
+    }
+
+    &:not(:hover) {
+      .build-card-remove {
+        display: none;
+        padding: 10px;
+      }
+    }
+  }
+
+  &.success {
+  	border-left: 10px solid #44A662;
+  	color: #44A662;
+  }
+
 }
 
-.build-card h2 {
-  margin-top: 40px;
-	font-size: 24px;
-  height: 50px;
-	font-weight: bold;
-}
-.build-card .branch {
-	font-weight: bold;
-}
-.build-card p {
-	font-size: 14px;
-}
-.build-card.error{
-	border-left: 10px solid #D94341;
-	color: #D94341;
-}
-.build-card.error a {
-	font-weight: bold;
-	color: #D94341;
-}
 
 @-webkit-keyframes blinkPendingCard {
   0% {
@@ -166,96 +260,4 @@ h1 {
     border-left: 10px solid #F1C40F;
     color: #F1C40F;
   }
-}
-
-.build-card.pending{
-  -webkit-animation: blinkPendingCard 2.5s infinite; /* Safari 4+ */
-  -moz-animation:    blinkPendingCard 2.5s infinite; /* Fx 5+ */
-  -o-animation:      blinkPendingCard 2.5s infinite; /* Opera 12+ */
-  animation:         blinkPendingCard 2.5s infinite;
-
-	border-left: 10px solid #F1C40F;
-	color: #F1C40F;
-}
-
-.build-card.pending a {
-	font-weight: bold;
-	color: #F1C40F;
-}
-
-.build-card .build-icon {
-	font-size: 30px;
-	height: 30px;
-}
-
-.build-card.unknown{
-	border-left: 10px solid #D94341;
-	color: #969896;
-}
-
-.build-card.unknown a {
-	font-weight: bold;
-	color: #969896;
-}
-
-.build-card {
-
-  &.success,
-  &.error,
-  &.pending,
-  &.unknown {
-
-    .build-card-remove-wrapper {
-      font-size: 20px;
-      line-height: 20px;
-      font-weight: 700;
-      color: #888;
-      text-align: right;
-      position: relative;
-      // display: inline-block;
-
-      .build-card-remove {
-        cursor: pointer;
-        border-radius: 50%;
-        padding: 10px;
-        float: right;
-        transition: background-color .3s, text-shadow .3s;
-        position: absolute;
-        right: 10px;
-        display: block;
-      }
-    }
-
-    &:not(:hover) {
-      .build-card-remove {
-        display: none;
-        padding: 10px;
-      }
-    }
-
-  }
-}
-
-
-
-.build-card.success {
-	border-left: 10px solid #44A662;
-	color: #44A662;
-}
-
-.build-url {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.main {
-	padding-bottom: 50px;
-}
-
-.pure-form legend {
-  font-size: 20px;
-}
-
-.export-button {
-  margin-right: 1em;
 }

@@ -13,39 +13,57 @@
 .main-header{
   font-size: 60px;
 }
+
 .main-desc{
   font-size: 24px;
 }
 
-
 .wrap {
-  background-image: linear-gradient(0deg, #0097a7 0%, #00b8d4 100%); }
-  .wrap svg {
-    display: block;
-    margin: 0 auto; }
+  background-image: linear-gradient(0deg, #0097a7 0%, #00b8d4 100%);
+
+	svg {
+		display: block;
+		margin: 0 auto;
+	}
+}
 
 .curve {
-  stroke-opacity: 0; }
-  .curve path {
-    transform-origin: center 60px; }
-  .curve path:nth-child(1) {
-    stroke-width: 1px;
-    animation: curve 6s linear 1.2s infinite; }
-  .curve path:nth-child(2) {
-    stroke-width: 1px;
-    animation: curve 6s linear 2.4s infinite; }
-  .curve path:nth-child(3) {
-    stroke-width: 2px;
-    animation: curve 6s linear 3.6s infinite; }
-  .curve path:nth-child(4) {
-    stroke-width: 2px;
-    animation: curve 6s linear 4.8s infinite; }
-  .curve path:nth-child(5) {
-    stroke-width: 3px;
-    animation: curve 6s linear 6s infinite; }
-  .curve path:nth-child(6) {
-    stroke-width: 3px;
-    animation: curve 6s linear 7.2s infinite; }
+  stroke-opacity: 0;
+
+	path {
+    transform-origin: center 60px;
+
+		&:nth-child(1) {
+	    stroke-width: 1px;
+	    animation: curve 6s linear 1.2s infinite;
+		}
+
+		&:nth-child(2) {
+			stroke-width: 1px;
+			animation: curve 6s linear 2.4s infinite;
+		}
+
+		&:nth-child(3) {
+			stroke-width: 2px;
+			animation: curve 6s linear 3.6s infinite;
+		}
+
+		&:nth-child(4) {
+			stroke-width: 2px;
+			animation: curve 6s linear 4.8s infinite;
+		}
+
+		&:nth-child(5) {
+			stroke-width: 3px;
+			animation: curve 6s linear 6s infinite;
+		}
+
+		&:nth-child(6) {
+			stroke-width: 3px;
+			animation: curve 6s linear 7.2s infinite;
+		}
+	}
+}
 
 @keyframes curve {
   0% {

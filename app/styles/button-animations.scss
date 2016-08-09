@@ -1,65 +1,59 @@
 
-@-webkit-keyframes ld {
+@-webkit-keyframes loading-button {
   0%   { transform: rotate(0deg) scale(1); }
   50%  { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-@-moz-keyframes ld {
+@-moz-keyframes loading-button {
   0%   { transform: rotate(0deg) scale(1); }
   50%  { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-@-o-keyframes ld {
+@-o-keyframes loading-button {
   0%   { transform: rotate(0deg) scale(1); }
   50%  { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
-@keyframes ld {
+@keyframes loading-button {
   0%   { transform: rotate(0deg) scale(1); }
   50%  { transform: rotate(180deg) scale(1.1); }
   100% { transform: rotate(360deg) scale(1); }
 }
 
 .m-progress {
-    position: relative;
-    opacity: .8;
-    color: transparent !important;
-    text-shadow: none !important;
-}
+  position: relative;
+  opacity: .8;
+  color: transparent !important;
+  text-shadow: none !important;
 
-.m-progress:hover,
-.m-progress:active,
-.m-progress:focus {
+ 	&:hover,
+ 	&:active,
+ 	&:focus {
     cursor: default;
     color: transparent;
     outline: none !important;
     box-shadow: none;
-}
+	}
 
-.m-progress:before {
+	&:before {
     content: '';
-
     display: inline-block;
-
     position: absolute;
     background: transparent;
     border: 1px solid #fff;
     border-top-color: transparent;
     border-bottom-color: transparent;
     border-radius: 50%;
-
     box-sizing: border-box;
-
     top: 50%;
     left: 50%;
     margin-top: -12px;
     margin-left: -12px;
-
     width: 24px;
     height: 24px;
-
-    -webkit-animation: ld 1s ease-in-out infinite;
-    -moz-animation:    ld 1s ease-in-out infinite;
-    -o-animation:      ld 1s ease-in-out infinite;
-    animation:         ld 1s ease-in-out infinite;
+    -webkit-animation: loading-button 1s ease-in-out infinite;
+    -moz-animation:    loading-button 1s ease-in-out infinite;
+    -o-animation:      loading-button 1s ease-in-out infinite;
+    animation:         loading-button 1s ease-in-out infinite;
+	}
 }
