@@ -60,6 +60,15 @@ const CardListItem = React.createClass({
           return reject(error);
         }
 
+        if (response.statusCode === 404) {
+          notify({
+            title: 'Build Checker',
+            message: `Somethink is wrong with your CI URL: ${repository.cctrayTrackingURL}`
+          });
+
+          return reject('Error in CI/CD response');
+        }
+
         const data = RepositoryDataMapper.parse(body);
         return resolve(data);
       });
@@ -126,6 +135,22 @@ const CardListItem = React.createClass({
     })
     .on('error', (err) => {
       console.log(`Error: `, err);
+      const failObject = resetFailObject();
+      const webUrlName = this.props.cctrayTrackingURL.split('?')[0];
+
+      this.setState({
+        item: {
+          name: webUrlName,
+          webUrl: webUrlName,
+          lastBuildLabel: null,
+          lastBuildTime: null,
+          lastBuildStatus: null,
+          buildIcon : CONFIG.ERROR_ICON,
+          class: CONFIG.CARD_ERROR_CLASS
+        },
+        isTheFirstRequest: false,
+        failObject
+      });
     })
     .on('success', (data) => {
       if (schedulerHasBeingexecuted()) {
