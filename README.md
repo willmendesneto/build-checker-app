@@ -42,10 +42,17 @@ git clone https://github.com/willmendesneto/build-checker-app.git <your-project-
 And then install dependencies.
 
 ```bash
-$ cd <your-project-name> && npm install
+$ cd <your-project-name> && yarn install
 ```
 
-> Please check `.nvmrc` file. Please run the specific node and npm versions for use this repository
+Points to share
+
+- Please check `.nvmrc` file. Please run the specific node and npm versions for use this repository;
+- Please make sure that you have [Yarn package managemnt](https://yarnpkg.com/en/) installed globally;
+
+```bash
+$ npm install -g yarn@0.23.4
+```
 
 ## Run
 

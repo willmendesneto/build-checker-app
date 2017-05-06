@@ -11,7 +11,7 @@
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --recursive --require ./test/setup.js test/**/*.spec.js",
     "test-watch": "npm test -- --watch",
     "test-e2e": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register --require ./test/setup.js --require co-mocha ./test/e2e.js",
-    "lint": "eslint app",
+    "pretest": "eslint app",
     "hot-server": "node server.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
     "start": "cross-env NODE_ENV=production electron ./",
