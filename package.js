@@ -36,15 +36,15 @@ if (icon) {
 var version = argv.version || argv.v;
 
 if (version) {
-  DEFAULT_OPTS.version = version;
+  DEFAULT_OPTS.electronVersion = version;
   startPack();
 } else {
   // use the same version as the currently-installed electron-prebuilt
   exec('npm list electron-prebuilt', function(err, stdout) {
     if (err) {
-      DEFAULT_OPTS.version = '0.37.2';
+      DEFAULT_OPTS.electronVersion = '0.37.2';
     } else {
-      DEFAULT_OPTS.version = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
+      DEFAULT_OPTS.electronVersion = stdout.split('electron-prebuilt@')[1].replace(/\s/g, '');
     }
 
     startPack();
@@ -102,7 +102,7 @@ function pack(plat, arch, cb) {
     platform: plat,
     arch: arch,
     prune: true,
-    'app-version': pkg.version || DEFAULT_OPTS.version,
+    appVersion: pkg.version || DEFAULT_OPTS.electronVersion,
     out: 'release/' + plat + '-' + arch
   });
 

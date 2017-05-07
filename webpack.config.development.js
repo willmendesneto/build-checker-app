@@ -5,7 +5,6 @@ var webpack = require('webpack');
 var webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 var baseConfig = require('./webpack.config.base');
 
-
 var config = Object.create(baseConfig);
 
 config.debug = true;

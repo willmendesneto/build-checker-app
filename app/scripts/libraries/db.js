@@ -10,7 +10,7 @@ const getDB = () => {
   return DB;
 }
 
-const getDBClient = (key) => {
+const DBClient = (key) => {
   let database = getDB();
   if (!database(key)) {
     return false;
@@ -90,5 +90,5 @@ const getDBClient = (key) => {
 }
 
 export default {
-  DBClient: getDBClient
+  DBClient
 };
