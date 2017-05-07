@@ -1,30 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import request from 'request';
 import UrlHelper from '../../helpers/UrlHelper';
 import RepositoryDataMapper from '../../helpers/repository-data-mapper';
 import path from 'path';
-import {notify} from '../../libraries/notificate';
+import { notify } from '../../libraries/notificate';
 import CONFIG from '../../constants/AppConstants';
 
 const execute = require('controlled-schedule');
 const milisecondsToSeconds = (time) => time / 1000;
 
-let resetFailObject = () => {
+const resetFailObject = () => {
   return {
     name: null,
     lastBuildLabel: null,
     lastBuildStatus: null
   };
 };
+
 let longPolling = true;
 let schedule = null;
 
-const schedulerHasBeingexecuted = () => longPolling;
+const schedulerHasBeingExecuted = () => longPolling;
 
-const CardListItem = React.createClass({
-  getInitialState() {
-    return {
+class CardListItem extends Component {
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
       isTheFirstRequest: true,
       item: {
         name: null,
@@ -37,21 +41,25 @@ const CardListItem = React.createClass({
       },
       failObject: resetFailObject()
     };
-  },
+    this.handlerClick = this.handlerClick.bind(this);
+    this.startCIChecker = this.startCIChecker.bind(this);
+    this.startCICheckerScheduler();
+  }
 
   shouldComponentUpdate (nextProps, nextState) {
-    return this.state.item.class !== nextState.item.class && schedulerHasBeingexecuted();
-  },
+    const componentHasDifferentClass = this.state.item.class !== nextState.item.class;
+    return (componentHasDifferentClass && schedulerHasBeingExecuted());
+  }
 
   componentWillUnmount() {
     schedule.stop();
-  },
+  }
 
   startCIChecker() {
-    let repository = this.props;
+    const repository = this.props;
     return new Promise((resolve, reject) => {
 
-      if (!schedulerHasBeingexecuted()) {
+      if (!schedulerHasBeingExecuted()) {
         return reject('Polling was stopped!');
       }
 
@@ -73,7 +81,7 @@ const CardListItem = React.createClass({
         return resolve(data);
       });
     });
-  },
+  }
 
   onSuccess(data) {
     let failObject = this.state.failObject;
@@ -84,25 +92,8 @@ const CardListItem = React.createClass({
         message: `Now CI of "${data.name}" project is OK. ${data.webUrl}`
       });
     }
-
     return failObject;
-
-  },
-
-  onError(data) {
-    let failObject = this.state.failObject;
-
-    if ( failObject.name !== data.name && failObject.lastBuildLabel !== data.lastBuildLabel) {
-      failObject.name = data.name;
-      failObject.lastBuildLabel = data.lastBuildLabel;
-
-      notify({
-        title: 'Build Checker Failed',
-        message: `Somethink is wrong with your CI =(. Fix it!!!! ${data.webUrl}`
-      });
-    }
-    return failObject;
-  },
+  }
 
   onError(data) {
     let failObject = this.state.failObject;
@@ -122,19 +113,26 @@ const CardListItem = React.createClass({
       });
     }
     return failObject;
-  },
+  }
 
   startCICheckerScheduler() {
 
+    const intervalInMiliseconds = `${milisecondsToSeconds(this.props.interval)}s`;
     schedule = execute(this.startCIChecker)
-      .every(`${milisecondsToSeconds(this.props.interval)}s`);
+      .every(intervalInMiliseconds);
+
     schedule
     .on('stop', (data) => {
-      console.log('stopped!');
+      console.log('Stopped!');
       longPolling = false;
     })
     .on('error', (err) => {
-      console.log(`Error: `, err);
+      console.log('Error:', err);
+
+      if (!schedulerHasBeingExecuted()) {
+        return;
+      }
+
       const failObject = resetFailObject();
       const webUrlName = this.props.cctrayTrackingURL.split('?')[0];
 
@@ -153,35 +151,37 @@ const CardListItem = React.createClass({
       });
     })
     .on('success', (data) => {
-      if (schedulerHasBeingexecuted()) {
-        let failObject = {};
-        const isAnBuildSuccessResponse = data.lastBuildStatus === CONFIG.BUILD_STATUS_SUCCESS;
-        if (isAnBuildSuccessResponse) {
-          failObject = this.onSuccess(data);
-        } else {
-          failObject = this.onError(data);
-        }
-
-        this.setState({
-          item: data,
-          isTheFirstRequest: false,
-          failObject
-        });
+      console.log('Success:');
+      if (!schedulerHasBeingExecuted()) {
+        return;
       }
+
+      let failObject = {};
+      const isAnBuildSuccessResponse = data.lastBuildStatus === CONFIG.BUILD_STATUS_SUCCESS;
+      if (isAnBuildSuccessResponse) {
+        failObject = this.onSuccess(data);
+      } else {
+        failObject = this.onError(data);
+      }
+
+      this.setState({
+        item: data,
+        isTheFirstRequest: false,
+        failObject
+      });
     });
     schedule.start();
-  },
+  }
 
   componentWillMount() {
     longPolling = true;
-    this.startCICheckerScheduler();
-  },
+  }
 
   handlerClick(e) {
     e.stopPropagation();
     const URL = this.state.item.webUrl;
     require('electron').shell.openExternal(URL);
-  },
+  }
 
   render() {
     const loadingClass = this.state.isTheFirstRequest ? 'loading' : '';
@@ -202,7 +202,6 @@ const CardListItem = React.createClass({
       </div>
     );
   }
-});
-
+};
 
 export default CardListItem;

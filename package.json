@@ -124,8 +124,8 @@
     "jquery": "^2.2.1",
     "lowdb": "^0.12.5",
     "query-string": "^4.0.0",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "react-file-input": "^0.2.5",
     "react-router": "^2.0.0",
     "request": "2.65.0"

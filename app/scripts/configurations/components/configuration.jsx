@@ -1,9 +1,9 @@
 'use babel';
 
-import React from 'react';
+import React, { Component } from 'react';
 
-import DB from '../../libraries/db';
-let DBClient = DB.DBClient('repositories');
+import { DBClient } from '../../libraries/db';
+const DBRepositories = DBClient('repositories');
 
 const FORM_STATES = {
   NOT_STARTED: 'NOT_STARTED',
@@ -12,26 +12,31 @@ const FORM_STATES = {
 };
 
 let timeoutId = null;
-var Configuration = React.createClass({
-  getInitialState: function() {
-    return {
+
+class Configuration extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
       cctrayTrackingURL: '',
       submitted: false,
       formState: FORM_STATES.NOT_STARTED
     };
-  },
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCCTrayTrackingURLChange = this.handleCCTrayTrackingURLChange.bind(this);
+  }
 
   componentWillUnmount() {
     clearTimeout(timeoutId);
-  },
+  }
 
-  handleCCTrayTrackingURLChange: function(e) {
+  handleCCTrayTrackingURLChange(e) {
     if (e.target.value !== this.state.cctrayTrackingURL) {
       this.setState({cctrayTrackingURL: e.target.value});
     }
-  },
+  }
 
-  handleSubmit: function(e) {
+  handleSubmit(e) {
     e.preventDefault();
     this.setState({submitted: true});
     const cctrayTrackingURL = this.state.cctrayTrackingURL.trim();
@@ -39,7 +44,7 @@ var Configuration = React.createClass({
       this.setState({formState: FORM_STATES.INVALID});
       return;
     }
-    const inserted = DBClient.insert({cctrayTrackingURL: cctrayTrackingURL});
+    const inserted = DBRepositories.insert({cctrayTrackingURL: cctrayTrackingURL});
     timeoutId = setTimeout(() => {
       if (inserted) {
         this.setState({cctrayTrackingURL: '', formState: FORM_STATES.ADDED, submitted: false});
@@ -50,9 +55,9 @@ var Configuration = React.createClass({
         this.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);
-  },
+  }
 
-  render: function() {
+  render() {
 
     var message  = '';
     if (this.state.formState === FORM_STATES.ADDED) {
@@ -88,7 +93,7 @@ var Configuration = React.createClass({
       </div>
     );
   }
-});
+};
 
 
 export default Configuration;

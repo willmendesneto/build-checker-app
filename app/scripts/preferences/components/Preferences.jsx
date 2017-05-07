@@ -1,13 +1,13 @@
 'use babel';
 
-import React from 'react';
+import React, { Component } from 'react';
 import FileInput from 'react-file-input';
-import {notify} from '../../libraries/notificate';
+import { notify } from '../../libraries/notificate';
 import ipc from 'ipc-renderer';
 
-import DB from '../../libraries/db';
-const DBConfig = DB.DBClient('configurations');
-const DBClient = DB.DBClient('repositories');
+import { DBClient } from '../../libraries/db';
+const DBConfig = DBClient('configurations');
+const DBRepositories = DBClient('repositories');
 
 const FORM_STATES = {
   NOT_STARTED: 'NOT_STARTED',
@@ -32,42 +32,49 @@ if (!config) {
 
 let timeoutId = null;
 const comfirmationMessage = 'If you continue all your oldest content will be removed. Are you really sure?';
-const json = JSON.stringify({repositories: DBClient.findAll()});
+const json = JSON.stringify({repositories: DBRepositories.findAll()});
 const blob = new Blob([json], {type: 'application/json'});
 const exportRepositoriesURL = URL.createObjectURL(blob);
 
-const Configuration = React.createClass({
-  getInitialState() {
-    return {
+class Configuration extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
       submitted: false,
       interval: milisecondsToSeconds(config.interval),
       showAppInDock: config.showAppInDock,
       enableDesktopNotification: config.enableDesktopNotification,
       formState: FORM_STATES.NOT_STARTED
     };
-  },
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handlePollInterval = this.handlePollInterval.bind(this);
+    this.handleEnableDesktopNotification = this.handleEnableDesktopNotification.bind(this);
+    this.handleShowAppInDock = this.handleShowAppInDock.bind(this);
+    this.handleImportRepository = this.handleImportRepository.bind(this);
+  }
 
   componentWillUnmount() {
     clearTimeout(timeoutId);
-  },
+  }
 
   handlePollInterval(e) {
     if (e.target.value !== this.state.interval) {
       this.setState({interval: e.target.value});
     }
-  },
+  }
 
   handleEnableDesktopNotification(e) {
     if (e.target.value !== this.state.enableDesktopNotification) {
       this.setState({enableDesktopNotification: e.target.checked});
     }
-  },
+  }
 
   handleShowAppInDock(e) {
     if (e.target.value !== this.state.showAppInDock) {
       this.setState({showAppInDock: e.target.checked});
     }
-  },
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -100,7 +107,7 @@ const Configuration = React.createClass({
         self.setState({formState: FORM_STATES.NOT_STARTED});
       }, 3000);
     }, 1000);
-  },
+  }
 
   handleImportRepository(event) {
     if (confirm(comfirmationMessage)) {
@@ -120,13 +127,13 @@ const Configuration = React.createClass({
         const dump = JSON.parse(evt.target.result);
         const databaseKey = 'repositories';
         if ( Object.keys(dump).indexOf(databaseKey) !== -1) {
-          DBClient.removeAll();
+          DBRepositories.removeAll();
           dump[databaseKey].map((repository) => {
             return {
               cctrayTrackingURL: repository.cctrayTrackingURL
             };
           }).forEach((repository) => {
-            DBClient.insert(repository);
+            DBRepositories.insert(repository);
           });
           message = 'Repository dump file imported with success';
         } else {
@@ -146,7 +153,7 @@ const Configuration = React.createClass({
         console.log(evt);
       }
     }
-  },
+  }
 
   render() {
 
@@ -223,7 +230,7 @@ const Configuration = React.createClass({
       </div>
     );
   }
-});
+};
 
 
 export default Configuration;
